@@ -234,37 +234,37 @@ RETURN
 Příklad spuštění funkce ord
 
 
-.IFJcode19								#
-CREATEFRAME								#
-PUSHFRAME								# hlavička která musi byt vždycky na začatku kodu
-JUMP $$main								#-- Přeskočení definicí funkcí na main
+.IFJcode19				#
+CREATEFRAME				#
+PUSHFRAME				# hlavička která musi byt vždycky na začatku kodu
+JUMP $$main				#-- Přeskočení definicí funkcí na main
 
-LABEL ord								# \
-PUSHFRAME								# |
-DEFVAR lf@retval						# |
-DEFVAR lf@cmpres						# |
-LT lf@cmpres lf@i int@0					# |
-JUMPIFNEQ iGEQ0 bool@true lf@cmpres		# |
-MOVE lf@retval nil@nil					# |
-POPFRAME								# |
-RETURN									# |
-LABEL iGEQ0								# |-------- funkce ord
-DEFVAR lf@strlen						# |
-STRLEN lf@strlen lf@s					# |
-GT lf@cmpres lf@i lf@strlen				# |
-JUMPIFNEQ igood bool@true lf@cmpres		# |
-POPFRAME								# |
-RETURN									# |
-LABEL igood								# |
-STRI2INT lf@retval lf@s lf@i			# |
-POPFRAME								# |
-RETURN									# /
+LABEL ord				# \
+PUSHFRAME				# |
+DEFVAR lf@retval			# |
+DEFVAR lf@cmpres			# |
+LT lf@cmpres lf@i int@0			# |
+JUMPIFNEQ iGEQ0 bool@true lf@cmpres	# |
+MOVE lf@retval nil@nil			# |
+POPFRAME				# |
+RETURN					# |
+LABEL iGEQ0				# |-------- funkce ord
+DEFVAR lf@strlen			# |
+STRLEN lf@strlen lf@s			# |
+GT lf@cmpres lf@i lf@strlen		# |
+JUMPIFNEQ igood bool@true lf@cmpres	# |
+POPFRAME				# |
+RETURN					# |
+LABEL igood				# |
+STRI2INT lf@retval lf@s lf@i		# |
+POPFRAME				# |
+RETURN					# /
 
-LABEL $$main							#-- Začátek mainu
-CREATEFRAME								#
-DEFVAR TF@s								# \
-MOVE TF@s string@popelnicek				#  |____Definice proměnných
-DEFVAR TF@i								#  |
-MOVE TF@i int@1							# / 
-CALL ord								#--- volání funkce
-WRITE TF@retval							#--- výpis výsledku
+LABEL $$main				#-- Začátek mainu
+CREATEFRAME				#
+DEFVAR TF@s				# \
+MOVE TF@s string@popelnicek		#  |____Definice proměnných
+DEFVAR TF@i				#  |
+MOVE TF@i int@1				# / 
+CALL ord				#--- volání funkce
+WRITE TF@retval				#--- výpis výsledku
