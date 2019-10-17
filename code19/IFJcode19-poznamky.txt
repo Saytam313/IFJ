@@ -1,0 +1,270 @@
+GF   - globalni ramec
+LF   - lokalni ramec
+TF   - docasny ramec 
+INT  - integer promena
+FL   - float promena (pouzivat %a v printf pro zapis)
+string  - string prom. (znaky muzou byt zapsany pomoci ASCII ve formatu /000 )
+BOOL - bool prom.
+nil  - NULL
+
+
+zapis prom:
+int@42
+nil@nil
+
+zacatek:
+.IFJcode18
+CREATEFRAME
+PUSHFRAME
+JUMP $$main
+
+deklarace promenne:
+DEFVAR (ramec)@(nazev)
+MOVE (cil) (zdroj)
+
+deklarace funkce:
+LABEL $$foo
+PUSHFRAME
+
+RETURN
+
+
+volani funkce:
+CREATEFRAME
+(deklarace promenne pro parametry)
+CALL $foo
+MOVE (return promenna) (promenna s vysledkem funkce)
+
+
+
+
+
+inputs= tento řetězec vrátí bez další úpravy včetně symbolu konce řádku (načítaný řetězec nepodporuje escape sekvence).
+
+inputi= načítá a vrací celé číslo
+inputf= načítá a vrací desetinné číslo.
+pro inputi a inputf jsou úvodní bílé znaky ignorovány. Dále jsou ignorovány znaky vyskytující se za prvním nevhodným znakem (včetně).
+
+V případě chybějící hodnoty na vstupu nebo jejího špatného formátu bude výsledek funkce nil, 0, nebo 0.0.
+
+
+
+
+Příkaz pro výpis hodnot:
+
+print ( term1 , term2 , …, term𝑛 )
+Vestavěný příkaz má libovolný počet parametrů tvořených termy oddělenými čárkou.
+Sémantika příkazu je následující: Postupně zleva doprava prochází termy (podrobněji popsány v sekci 3.1) a vypisuje jejich hodnoty na standardní výstup dle typu v patřičném formátu. Výpis jednotlivých termů je oddělen mezerou a za posledním termem se vypisuje místo mezery odřádkování (znak s ASCII hodnotou 10). Hodnota termu typu int bude vytištěna pomocí '%d'23, hodnota termu typu float pak pomocí '%a'24.
+None je vypsán jako řetězec None. Funkce print vždy vrací návratovou hodnotu None.
+
+Vestavěné funkce pro práci s řetězci: V rámci následujících vestavěných funkcí probíhají i
+případné implicitní konverze parametrů a při špatném typu parametru dochází k chybě 4.
+
+len(s) – Vrátí délku (počet znaků) řetězce zadaného jediným parametrem 𝑠.
+Např. len("x\nz") vrací 3.
+
+vstup: string s;
+
+volani pred funkci:
+	TF@%s //string s
+
+vystup v TF@retval
+
+LABEL length
+PUSHFRAME
+DEFVAR LF@retval
+MOVE LF@retval nil@nil
+DEFVAR LF@param1
+MOVE LF@param1 LF@%s
+DEFVAR LF@len
+STRLEN LF@len LF@param1
+MOVE LF@retval LF@len
+POPFRAME
+RETURN
+
+
+
+
+substr(s, i, n) – Vrátí podřetězec zadaného řetězce 𝑠. Druhým parametrem 𝑖 je
+dán začátek požadovaného podřetězce (počítáno od nuly) a třetí parametr 𝑛 určuje
+délku podřetězce. Je-li index 𝑖 mimo meze 0 až length(s) nebo 𝑛 < 0, vrací funkce
+None. Je-li 𝑛 > length(s)−𝑖, jsou jako řetězec vráceny od 𝑖-tého znaku všechny
+zbývající znaky řetězce 𝑠.
+
+vstup:	string s;//string
+		int i;//start
+		int n;//delka
+
+volani pred funkci:
+	TF@s //string s
+	TF@i //int i
+	TF@n //int n
+
+vystup v TF@retval
+
+podminky:	n > len(s)-i //vypise vsechno od i do konce
+			0 <= i <= len(s) || n > 0 //jinak vraci nil
+
+LABEL substr
+PUSHFRAME
+DEFVAR lf@retval
+MOVE LF@retval nil@nil
+DEFVAR lf@cmpres
+
+JUMPIFEQ str0 lf@s string@ #zjistim jestli neni string prazdnej
+LT lf@cmpres lf@i int@0 #zjistim jestli I je vesti nebo rovno jak 0
+
+JUMPIFNEQ iGT0 lf@cmpres bool@true
+MOVE lf@retval nil@nil #moc male I
+POPFRAME
+RETURN
+
+LABEL iGT0
+DEFVAR lf@strlen
+STRLEN lf@strlen lf@s
+GT lf@cmpres lf@i lf@strlen 
+
+JUMPIFNEQ igood bool@true lf@cmpres #I je mensi nebo rovno nez len(s)
+MOVE lf@retval nil@nil #moc vysoky I
+POPFRAME
+RETURN
+
+LABEL igood
+GT lf@cmpres lf@n int@0
+
+JUMPIFEQ ngood bool@true lf@cmpres #n je vetsi nez 0
+MOVE lf@retval nil@nil
+POPFRAME
+RETURN
+
+LABEL ngood
+ADD lf@cmpres lf@i lf@n   #cmpres = i+n
+GT lf@cmpres lf@cmpres lf@strlen
+
+JUMPIFNEQ nrdy bool@true lf@cmpres #i+n>lens(s)
+SUB lf@n lf@strlen lf@i
+
+LABEL nrdy
+
+DEFVAR LF@char
+MOVE LF@retval string@
+LABEL substrwhile
+JUMPIFEQ konec lf@n int@0 #while cyklus n!=0
+GETCHAR lf@char lf@s lf@i
+CONCAT lf@retval lf@retval lf@char
+SUB lf@n lf@n int@1
+ADD lf@i lf@i int@1
+JUMP substrwhile
+
+LABEL konec
+POPFRAME
+RETURN
+//=========================================================================
+• ord(s, i ) – Vrátí ordinální hodnotu (ASCII) znaku na pozici 𝑖 v řetězci 𝑠. Je-li
+pozice mimo meze řetězce (0 až length(s) - 1), vrací None.
+
+
+vstup: 	string s;
+		int i;
+
+podminky:	i >= 0 && i<=len(s)
+
+volani pred funkci:
+	TF@s //string s
+	TF@i //int i
+
+vystup v TF@retval
+
+
+LABEL ord
+PUSHFRAME
+DEFVAR lf@retval
+DEFVAR lf@cmpres
+LT lf@cmpres lf@i int@0
+JUMPIFNEQ iGEQ0 bool@true lf@cmpres
+MOVE lf@retval nil@nil
+POPFRAME
+RETURN
+LABEL iGEQ0
+DEFVAR lf@strlen
+STRLEN lf@strlen lf@s
+GT lf@cmpres lf@i lf@strlen
+JUMPIFNEQ igood bool@true lf@cmpres
+POPFRAME
+RETURN
+LABEL igood
+STRI2INT lf@retval lf@s lf@i
+POPFRAME
+RETURN
+//=========================================================================
+• chr(i) – Vrátí jednoznakový řetězec se znakem, jehož ASCII kód je zadán parametrem
+𝑖. Případ, kdy je 𝑖 mimo interval [0; 255], vede na běhovou chybu při práci
+s řetězcem.
+
+vstup: 	int i;
+podminky:  i >= 0 && i <= 255
+
+volani pred funkci:
+	TF@i //int i
+
+vystup v TF@retval
+
+LABEL chr
+PUSHFRAME
+DEFVAR lf@retval
+DEFVAR lf@cmpres
+LT lf@cmpres lf@i int@0
+JUMPIFNEQ iGEQ0 bool@true lf@cmpres
+MOVE lf@retval nil@nil
+POPFRAME
+RETURN
+LABEL iGEQ0
+GT lf@cmpres lf@i int@255
+JUMPIFNEQ igood bool@true lf@cmpres
+MOVE lf@retval nil@nil
+POPFRAME
+RETURN
+LABEL igood
+INT2CHAR lf@retval lf@i
+POPFRAME
+RETURN
+
+
+
+Příklad spuštění funkce ord
+
+
+.IFJcode19								#
+CREATEFRAME								#
+PUSHFRAME								# hlavička která musi byt vždycky na začatku kodu
+JUMP $$main								#-- Přeskočení definicí funkcí na main
+
+LABEL ord								# \
+PUSHFRAME								# |
+DEFVAR lf@retval						# |
+DEFVAR lf@cmpres						# |
+LT lf@cmpres lf@i int@0					# |
+JUMPIFNEQ iGEQ0 bool@true lf@cmpres		# |
+MOVE lf@retval nil@nil					# |
+POPFRAME								# |
+RETURN									# |
+LABEL iGEQ0								# |-------- funkce ord
+DEFVAR lf@strlen						# |
+STRLEN lf@strlen lf@s					# |
+GT lf@cmpres lf@i lf@strlen				# |
+JUMPIFNEQ igood bool@true lf@cmpres		# |
+POPFRAME								# |
+RETURN									# |
+LABEL igood								# |
+STRI2INT lf@retval lf@s lf@i			# |
+POPFRAME								# |
+RETURN									# /
+
+LABEL $$main							#-- Začátek mainu
+CREATEFRAME								#
+DEFVAR TF@s								# \
+MOVE TF@s string@popelnicek				#  |____Definice proměnných
+DEFVAR TF@i								#  |
+MOVE TF@i int@1							# / 
+CALL ord								#--- volání funkce
+WRITE TF@retval							#--- výpis výsledku
