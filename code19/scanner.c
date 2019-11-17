@@ -254,8 +254,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Bílý znak, ale ne mezera
                 } else if(isblank(c)) {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong tab format: 0x%02x at line: %d\n", c, line);
-                    return_eof_false(token);
+                    fprintf(stderr, "LEX_ERR, Wrong tab format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 //Načtení konce odsazení
                 } else {
@@ -795,8 +794,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                     }
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong doc. here string format: 0x%02x at line: %d\n", c, line);
-                    return_eof_false(token);
+                    fprintf(stderr, "LEX_ERR, Wrong doc. here string format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 }
                 break;
