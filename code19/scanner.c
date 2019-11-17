@@ -43,7 +43,7 @@ bool tokenString(string_t *st) {
     st->string = (char *)malloc(sizeof(char)*TOKEN_STRING_SIZE);
 
     if(st->string == NULL) {
-        printf\("%s:%d\n", "ERROR", 99);
+        fprintf(stderr, "%s:%d\n", "ERROR", 99);
         exit(99);
     }
 
