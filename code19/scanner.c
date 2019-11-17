@@ -795,7 +795,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                     }
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong doc. here string format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
                 }
