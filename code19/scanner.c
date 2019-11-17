@@ -340,7 +340,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                             stav = STRING;  //nacteni začátku stringu
                             break;
                         case '"':
-                            stav = STRING_DOC;
+                            stav = STRING_DOC_START;
+                            str_doc++;
                             break;
                         case '!':
                             stav = NEG; //nacteni negaco
