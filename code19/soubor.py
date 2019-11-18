@@ -1,0 +1,8 @@
+a=ord('asdasd',1)
+b=substr('abcdefgh',3,5)
+c=len('1234567')
+d=chr(115)
+print('Ord: ',a,'\n')
+print('Substr: ',b,'\n')
+print('Len: ',c,'\n')
+print('chr: ',d,'\n')
