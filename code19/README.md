@@ -1,4 +1,5 @@
 Navod na spusteni:
+
 	nejprve prelozit pomoci:
 	
 	make
@@ -12,6 +13,7 @@ Navod na spusteni:
 	vystup probehne na stdout kdyz nenastane zadnej error
 
 Prelozeni vyslednyho IFJcode19:
+
 	na to je navod tady
 	https://wis.fit.vutbr.cz/FIT/st/cwk.php?title=2019_ic19int&csid=697132&id=13305
 
