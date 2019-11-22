@@ -10,7 +10,6 @@
 #include "symtable.h"
 #include "built_in.h"
 
-
 char precedence_table [13][13] = {
 /*            +    -    *    /    <=   <   >=    >   !=    ==   (    )    $ */
 /*  +  */   {'>', '>', '<', '<', '>', '>', '>', '>', '>', '>', '<', '>', '>'},
@@ -287,6 +286,9 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
     static int float_count = 1;
     static int div_count = 1;
     static int concat_count = 1;
+    int oper1_val_type=0;
+    int oper2_val_type=0;
+
     if( (act_token.type >= token_plus && act_token.type <= token_div) ||
         (act_token.type >= token_less_equal && act_token.type <= token_equal_equal)){
         operator_tok = act_token;
@@ -295,6 +297,9 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         act_token = S_Top_token(postfix_stack);
     }
 //    printf("pred operand1: %d\n", act_token.type);
+//    printf("pred operand2: %d\n", act_token.type);
+
+    
     if( act_token.type >= token_id && act_token.type <= token_string){
         operand1 = act_token;
 //        printf("operand1: %d\n", operand1.type);
@@ -303,15 +308,17 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
             push_list("PUSHS", get_name(act_token), NULL, NULL);
             return;
         }
-        push_list("PUSHS", get_name(act_token), NULL, NULL);
+        oper1_val_type=1;
+
         act_token = S_Top_token(postfix_stack);
 //        S_Pop(postfix_stack);
     } else {
 //        S_Push_Token(postfix_stack, act_token);
         postfix_instruction(postfix_stack, act_func, logic);
-        push_list("DEFVAR", str_num("LF@$tmp", tmp_count), NULL, NULL);
-        push_list("POPS", str_num("LF@$tmp", tmp_count), NULL, NULL);
-        push_list("PUSHS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        oper1_val_type=2;
+
+
+
         operand1.val.c = str_num("$tmp", tmp_count);
         operand1.type = token_id;
 //        printf("operand1: %s\n", operand1.val.c);
@@ -319,21 +326,23 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
 //        S_Pop(postfix_stack);
         act_token = S_Top_token(postfix_stack);
     }
-//    printf("pred operand2: %d\n", act_token.type);
+
     if( act_token.type >= token_id && act_token.type <= token_string){
         operand2 = act_token;
 //        printf("operand2: %d\n", operand2.type);
         S_Pop(postfix_stack);
-        push_list("PUSHS", get_name(act_token), NULL, NULL);
+        oper2_val_type=1;
+        
         act_token = S_Top_token(postfix_stack);
 //        S_Pop(postfix_stack);
     } else {
 //        printf("pushuju %d\n", act_token.type);
 //        S_Push_Token(postfix_stack, act_token);
         postfix_instruction(postfix_stack, act_func, logic);
-        push_list("DEFVAR", str_num("LF@$tmp", tmp_count), NULL, NULL);
-        push_list("POPS", str_num("LF@$tmp", tmp_count), NULL, NULL);
-        push_list("PUSHS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        oper2_val_type=2;
+
+
+
         operand2.val.c = str_num("$tmp", tmp_count);
         operand2.type = token_id;
 //        printf("operand2: %s\n", operand2.val.c);
@@ -342,12 +351,27 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         act_token = S_Top_token(postfix_stack);
     }
 
+    if(oper2_val_type==1){
+        push_list("PUSHS", get_name(operand2), NULL, NULL);
+    }else if(oper2_val_type==2){
+        push_list("DEFVAR", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        push_list("POPS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        push_list("PUSHS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+    }
+    if(oper1_val_type==1){
+        push_list("PUSHS", get_name(operand1), NULL, NULL);
+    }else if(oper1_val_type==2){
+        push_list("DEFVAR", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        push_list("POPS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+        push_list("PUSHS", str_num("LF@$tmp", tmp_count), NULL, NULL);
+    }
+
     push_list("TYPE", "GF@$type1", get_name(operand1), NULL);
     push_list("TYPE", "GF@$type2", get_name(operand2), NULL);
-    if(operator_tok.type >= token_minus && operator_tok.type <= token_div){
-        push_list("JUMPIFEQ", "$error4", "GF@$type1", "string@string");
-        push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
-    }
+    //if(operator_tok.type >= token_minus && operator_tok.type <= token_div){
+    //    push_list("JUMPIFEQ", "$error4", "GF@$type1", "string@string");
+    //    push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
+    //}
     push_list("JUMPIFEQ", str_num("$sametype", sametype_count), "GF@$type1", "GF@$type2");
     push_list("JUMPIFEQ", "$error4", "GF@$type1", "string@string");
     push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
@@ -367,14 +391,14 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
             push_list("INT2FLOAT", get_name(operand2), get_name(old_operand), NULL);
         }
         tmp_count++;
-    } else {
-        push_list("JUMPIFEQ", str_num("$1float", float_count), "GF@$type1", "string@float");
-        push_list("INT2FLOAT", get_name(operand1), get_name(operand1), NULL);
-        push_list("JUMP", str_num("$sametype", sametype_count), NULL, NULL);
-        push_list("LABEL", str_num("$1float", float_count), NULL, NULL);
-        push_list("INT2FLOAT", get_name(operand2), get_name(operand2), NULL);
+    } //else {
+        //push_list("JUMPIFEQ", str_num("$1float", float_count), "GF@$type1", "string@float");
+        //push_list("INT2FLOAT", get_name(operand1), get_name(operand1), NULL);
+        //push_list("JUMP", str_num("$sametype", sametype_count), NULL, NULL);
+        //push_list("LABEL", str_num("$1float", float_count), NULL, NULL);
+        //push_list("INT2FLOAT", get_name(operand2), get_name(operand2), NULL);
         push_list("LABEL", str_num("$sametype", sametype_count), NULL, NULL);
-    }
+    //}
 
     float_count++;
     sametype_count++;
@@ -389,7 +413,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
             push_list("ADDS", NULL, NULL,NULL);
             push_list("JUMP", str_num("$concatend", concat_count), NULL, NULL);
             push_list("LABEL", str_num("$concat", concat_count), NULL, NULL);
-            push_list("CONCAT", get_name(operand1), get_name(operand2), NULL);
+            push_list("CONCAT", get_name(operand1), get_name(operand1), get_name(operand2));
             push_list("LABEL", str_num("$concatend", concat_count), NULL, NULL);
             concat_count++;
         }
@@ -402,13 +426,13 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("MULS", NULL, NULL,NULL);
         break;
     case token_div:
-        push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
-        push_list("JUMPIFEQ", "$error9", get_name(operand2), "float@0");
         push_list("JUMPIFEQ", str_num("$divs", div_count), "GF@$type1", "string@float");
+        push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
         push_list("IDIVS", NULL, NULL,NULL);
         push_list("JUMP", str_num("$done", div_count), NULL, NULL);
         push_list("LABEL", str_num("$divs", div_count), NULL, NULL);
         push_list("DIVS", NULL, NULL,NULL);
+        push_list("JUMPIFEQ", "$error9", get_name(operand2), "float@0x0.000000p+0");
         push_list("LABEL", str_num("$done", div_count), NULL,NULL);
         div_count++;
         break;
