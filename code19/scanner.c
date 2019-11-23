@@ -169,33 +169,29 @@ typedef enum {
     TAB,                    // 1
     DED,                    // 2
     ID,                     // 3
-    INPUTI,                 // 4
-    INPUTI_R,               // 5
-    INPUTS,                 // 6
-    INPUTS_R,               // 7
-    INPUTF,                 // 8
-    INPUTF_R,               // 9
-    NUM,                    // 10
-    DEC,                    // 11
-    DEC_DOT,                // 12
-    DEC_EXP,                // 13
-    DEC_DOT_EXP,            // 14
-    DEC_DOT_EXP_SIG,        // 15
-    STRING,                 // 16
-    STRING_ESC,             // 17
-    STRING_ESC_1,           // 18
-    STRING_ESC_2,           // 19
-    STRING_DOC_START,       // 20
-    STRING_DOC,             // 21
-    STRING_DOC_ESC,         // 22
-    STRING_DOC_ESC_1,       // 23
-    STRING_DOC_ESC_2,       // 24
-    STRING_DOC_END,         // 25
-    COMMENT_LINE,           // 26
-    EQUAL,                  // 27
-    LESS,                   // 28
-    GREAT,                  // 29
-    NEG,                    // 30
+    INPUTI,
+    INPUTI_R,
+    NUM,                    // 4
+    DEC,                    // 5
+    DEC_DOT,                // 6
+    DEC_EXP,                // 7
+    DEC_DOT_EXP,            // 8
+    DEC_DOT_EXP_SIG,        // 9
+    STRING,                 // 10
+    STRING_ESC,             // 11
+    STRING_ESC_1,           // 12
+    STRING_ESC_2,           // 13
+    STRING_DOC_START,       // 14
+    STRING_DOC,             // 15
+    STRING_DOC_ESC,         // 16
+    STRING_DOC_ESC_1,       // 17
+    STRING_DOC_ESC_2,       // 18
+    STRING_DOC_END,         // 19
+    COMMENT_LINE,           // 20
+    EQUAL,                  // 21
+    LESS,                   // 22
+    GREAT,                  // 23
+    NEG,                    // 24
 } token_stav;
 
 //Funkce, která načítá další vstup a zpracováváho
@@ -447,7 +443,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                 }
                 break;
 
-            //Inputi funkce zacala s (
             case INPUTI:
                 if (c == '(') {
                     stav = INPUTI_R;
@@ -468,7 +463,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                 }
                 break;
             
-            //Inputi funkce konec s )
             case INPUTI_R:
                 if (c == ')') {
                     token->type = token_inputi;
@@ -476,74 +470,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
                     printf("LEX_ERR, Wrong inputi format: 0x%02x at line: %d\n", c, line);
-                    return_eof_false(token);
-                    exit(1);
-                }
-                break;
-
-            //Inputs funkce zacala s (
-            case INPUTS:
-                if (c == '(') {
-                    stav = INPUTS_R;
-                } else {
-                    //Pokud nejde o klíčové slovo uloží se id do tokenu
-                    ungetc(c, f);
-                    token->type = token_id;
-                    token->val.c = val.string;
-                    
-                    //Uvedení proměnné st do původního stavu
-                    if(!tokenString(&val)) {
-                        val.string = token->val.c;
-                        token->val.c = NULL;
-                        return_eof_false(token);
-                    }
-
-                    return true;
-                }
-                break;
-            
-            //Inputs funkce konec s )
-            case INPUTS_R:
-                if (c == ')') {
-                    token->type = token_inputs;
-                    return true;
-                } else {
-                    fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong inputs format: 0x%02x at line: %d\n", c, line);
-                    return_eof_false(token);
-                    exit(1);
-                }
-                break;
-
-            //Inputf funkce zacala s (
-            case INPUTF:
-                if (c == '(') {
-                    stav = INPUTF_R;
-                } else {
-                    //Pokud nejde o klíčové slovo uloží se id do tokenu
-                    ungetc(c, f);
-                    token->type = token_id;
-                    token->val.c = val.string;
-                    
-                    //Uvedení proměnné st do původního stavu
-                    if(!tokenString(&val)) {
-                        val.string = token->val.c;
-                        token->val.c = NULL;
-                        return_eof_false(token);
-                    }
-
-                    return true;
-                }
-                break;
-            
-            //Inputf funkce konec s )
-            case INPUTF_R:
-                if (c == ')') {
-                    token->type = token_inputf;
-                    return true;
-                } else {
-                    fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong inputf format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
                 }
