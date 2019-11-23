@@ -57,7 +57,7 @@ typedef enum {
     token_right_bracket,    // 30
     token_comma,            // 31
     token_equal,            // 32
-    token_doubledot,        // 33
+    token_colon,            // 33
 
     token_eol,              // 34
     token_eof,              // 35
