@@ -267,7 +267,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                     //Větší odsazení
                     if(buffer[act] < val_tab) {
                         act++;
-                        if!(buffer[act] = val_tab) {
+                        if(!(buffer[act] = val_tab)) {
                             exit(99);
                         }
                         token->type = token_indent;
