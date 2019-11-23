@@ -365,7 +365,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                             token->type = token_right_bracket;  //nacteni pravé závorky
                             return true;
                         case ':':
-                            token->type = token_doubledot;  //nacteni dvojtecky
+                            token->type = token_colon;  //nacteni dvojtecky
                             return true;
                         case ',':
                             token->type = token_comma;  //nacteni čárky
