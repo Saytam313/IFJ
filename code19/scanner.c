@@ -416,13 +416,13 @@ bool get_next_token(FILE *f, Token_t *token) {
                     token_typ keyword;  //Pomocná proměnná
                     keyword = check_kword(val.string);  //Kontrola zda nejde o klíčové slovo
                     if(keyword != token_nic) {
-                        if(strcmp(keyword, "inputi")) {
+                        if(keyword == token_inputi) {
                             stav = INPUTI;/*
-                        } else if(strcmp(keyword, "inputs")) {
+                        } else if(strcmp(keyword, "inputs") == 0) {
                             stav = INPUTS;
-                        } else if(strcmp(keyword, "inputf")) {
-                            stav = INPUTF;
-                        }*/
+                        } else if(strcmp(keyword, "inputf") == 0) {
+                            stav = INPUTF;*/
+                        }
                         token->type = keyword;
                         return true;
                     }
