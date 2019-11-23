@@ -36,28 +36,28 @@ typedef enum {
     token_ord,              // 12
     token_print,            // 13
     token_substr,           // 14
-    token_then,             // 15
-    token_while,            // 16
-    token_doc_string,       // 17
-    token_pass,             // 18
-    token_return,           // 19
+    token_while,            // 15
+    token_doc_string,       // 16
+    token_pass,             // 17
+    token_return,           // 18
 
-    token_plus,             // 20
-    token_minus,            // 21
-    token_mul,              // 22
-    token_div,              // 23
+    token_plus,             // 19
+    token_minus,            // 20
+    token_mul,              // 21
+    token_div,              // 22
 
-    token_less_equal,       // 24
-    token_less,             // 25
-    token_great_equal,      // 26
-    token_great,            // 27
-    token_neg_equal,        // 28
-    token_equal_equal,      // 29
+    token_less_equal,       // 23
+    token_less,             // 24
+    token_great_equal,      // 25
+    token_great,            // 26
+    token_neg_equal,        // 27
+    token_equal_equal,      // 28
 
-    token_left_bracket,     // 30
-    token_right_bracket,    // 31
-    token_comma,            // 32
-    token_equal,            // 33
+    token_left_bracket,     // 29
+    token_right_bracket,    // 30
+    token_comma,            // 31
+    token_equal,            // 32
+    token_doubledot,        // 33
 
     token_eol,              // 34
     token_eof,              // 35
