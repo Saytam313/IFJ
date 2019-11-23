@@ -421,11 +421,11 @@ bool get_next_token(FILE *f, Token_t *token) {
                     keyword = check_kword(val.string);  //Kontrola zda nejde o klíčové slovo
                     if(keyword != token_nic) {
                         if(keyword == token_inputi) {
-                            stav = INPUTI;/*
-                        } else if(strcmp(keyword, "inputs") == 0) {
+                            stav = INPUTI;
+                        } else if(keyword == token_inputs) {
                             stav = INPUTS;
-                        } else if(strcmp(keyword, "inputf") == 0) {
-                            stav = INPUTF;*/
+                        } else if(keyword == token_inputf) {
+                            stav = INPUTF;
                         } else {
                             token->type = keyword;
                             return true;
