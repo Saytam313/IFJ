@@ -404,6 +404,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
     sametype_count++;
 
 ////    printf("operator type %d\n", operator_tok.type);
+    static int concatTmpVar=0;
     switch(operator_tok.type){
     case token_plus:
         if((operand1.type == token_val_float || operand1.type == token_val_int) || (operand2.type == token_val_float || operand2.type == token_val_int)) {
@@ -413,8 +414,16 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
             push_list("ADDS", NULL, NULL,NULL);
             push_list("JUMP", str_num("$concatend", concat_count), NULL, NULL);
             push_list("LABEL", str_num("$concat", concat_count), NULL, NULL);
-            push_list("CONCAT", get_name(operand1), get_name(operand1), get_name(operand2));
+            if(concatTmpVar==0){
+                push_list("DEFVAR", "GF@concatTmpVar", NULL, NULL);
+                concatTmpVar=1;                
+            }
+            push_list("POPS","GF@concatTmpVar",NULL,NULL);
+            push_list("POPS","GF@concatTmpVar",NULL,NULL);
+            push_list("CONCAT", "GF@concatTmpVar", get_name(operand2), get_name(operand1));
+            push_list("PUSHS", "GF@concatTmpVar", NULL, NULL);
             push_list("LABEL", str_num("$concatend", concat_count), NULL, NULL);
+
             concat_count++;
         }
 
