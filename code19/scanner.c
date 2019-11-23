@@ -135,8 +135,6 @@ token_typ check_kword(char *st) {
         return token_print;
     } else if(strcmp(st, "substr") == 0) {
         return token_substr;
-    } else if(strcmp(st, "then") == 0) {
-        return token_then;
     } else if(strcmp(st, "while") == 0) {
         return token_while;
     } else if(strcmp(st, "pass") == 0) {
@@ -171,6 +169,8 @@ typedef enum {
     TAB,                    // 1
     DED,                    // 2
     ID,                     // 3
+    INPUTI,
+    INPUTI_R,
     NUM,                    // 4
     DEC,                    // 5
     DEC_DOT,                // 6
@@ -254,7 +254,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Bílý znak, ale ne mezera
                 } else if(isblank(c)) {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong tab format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong tab format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 //Načtení konce odsazení
                 } else {
@@ -291,7 +292,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Špatné odsazení
                 } else if(buffer[act] < val_tab) {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong tab format at line: %d\n", line);
+                    printf("LEX_ERR, Wrong tab format at line: %d\n", line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -317,7 +319,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                     stav = NUM; //nacteni číslice(1-9) indikace čísla
                 } else if(c == '0') {   //nacteni číslice 0, jedná se o ERR
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 } else {
                     switch(c) {
@@ -361,6 +364,9 @@ bool get_next_token(FILE *f, Token_t *token) {
                         case ')':
                             token->type = token_right_bracket;  //nacteni pravé závorky
                             return true;
+                        case ':':
+                            token->type = token_doubledot;  //nacteni dvojtecky
+                            return true;
                         case ',':
                             token->type = token_comma;  //nacteni čárky
                             return true;
@@ -380,7 +386,8 @@ bool get_next_token(FILE *f, Token_t *token) {
 
                         default:    //nacteni neznámého symbolu
                             fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                            fprintf(stderr, "LEX_ERR, Unknown char: 0x%02x at line: %d\n", c, line);
+                            printf("LEX_ERR, Unknown char: 0x%02x at line: %d\n", c, line);
+                            return_eof_false(token);
                             exit(1);
 
                     }
@@ -409,6 +416,13 @@ bool get_next_token(FILE *f, Token_t *token) {
                     token_typ keyword;  //Pomocná proměnná
                     keyword = check_kword(val.string);  //Kontrola zda nejde o klíčové slovo
                     if(keyword != token_nic) {
+                        if(strcmp(keyword, "inputi")) {
+                            stav = INPUTI;/*
+                        } else if(strcmp(keyword, "inputs")) {
+                            stav = INPUTS;
+                        } else if(strcmp(keyword, "inputf")) {
+                            stav = INPUTF;
+                        }*/
                         token->type = keyword;
                         return true;
                     }
@@ -427,12 +441,45 @@ bool get_next_token(FILE *f, Token_t *token) {
                 }
                 break;
 
+            case INPUTI:
+                if (c == '(') {
+                    stav = INPUTI_R;
+                } else {
+                    //Pokud nejde o klíčové slovo uloží se id do tokenu
+                    ungetc(c, f);
+                    token->type = token_id;
+                    token->val.c = val.string;
+                    
+                    //Uvedení proměnné st do původního stavu
+                    if(!tokenString(&val)) {
+                        val.string = token->val.c;
+                        token->val.c = NULL;
+                        return_eof_false(token);
+                    }
+
+                    return true;
+                }
+                break;
+            
+            case INPUTI_R:
+                if (c == ')') {
+                    token->type = token_inputi;
+                    return true;
+                } else {
+                    fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
+                    printf("LEX_ERR, Wrong inputi format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
+                    exit(1);
+                }
+                break;
+
             //Číslo
             case NUM:
                 //Načítání číslic
                 if(isalnum(c) && set_nul) {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 } else if(isdigit(c)) {
                     if(!tokenStringPridChar(&val, c)) {
@@ -476,7 +523,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 } else {
                     ungetc(c, f);
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -522,7 +570,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 } else {
                     ungetc(c, f);
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -537,7 +586,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 } else {
                     ungetc(c, f);
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -613,7 +663,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -717,7 +768,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -768,7 +820,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -784,7 +837,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                     }
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -848,7 +902,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong doc. number format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -952,7 +1007,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -1003,7 +1059,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
                 }
@@ -1045,7 +1101,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -1086,7 +1143,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong number format 0x%02x at line: %d\n", c, line);
+                    return_eof_false(token);
                     exit(1);
                 }
                 break;
@@ -1108,7 +1166,7 @@ bool get_next_token(FILE *f, Token_t *token) {
     //Chyba vstupu
     if(stav != NIC) {
         fprintf(stderr, "%s:%d %s: %d\n", "ERROR", LEX_ERR, "at line", line);
-        fprintf(stderr, "LEX_ERR, Unexpectid end of file\n");
+        printf("LEX_ERR, Unexpectid end of file\n");
         exit(1);
     }
 
