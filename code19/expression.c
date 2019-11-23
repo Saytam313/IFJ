@@ -494,7 +494,7 @@ void infix_postfix(char* act_func, char* id){
 
     }
 
-    while(token->type != token_eol && token->type != token_then && token->type != token_do){
+    while(token->type != token_eol && token->type != token_colon && token->type != token_do){
 //        printf("hledam\n");
         if(is_operand()){
             if(token->type == token_id){

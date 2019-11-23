@@ -205,7 +205,7 @@ bool STATEMENT(){
         push_list("NOT", "GF@$result", "GF@$result", NULL);
         push_list("JUMPIFEQS", elselabel , "GF@$result", "int@1");
 
-        if(token->type == token_then){
+        if(token->type == token_colon){
             get_next_token(f, token);
 //            printf("thentoken type je %d\n", token->type);
             if(token->type == token_eol){
