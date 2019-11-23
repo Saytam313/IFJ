@@ -422,22 +422,24 @@ bool get_next_token(FILE *f, Token_t *token) {
                             stav = INPUTS;
                         } else if(strcmp(keyword, "inputf") == 0) {
                             stav = INPUTF;*/
+                        } else {
+                            token->type = keyword;
+                            return true;
                         }
-                        token->type = keyword;
+                    } else {
+                        //Pokud nejde o klíčové slovo uloží se id do tokenu
+                        token->type = token_id;
+                        token->val.c = val.string;
+
+                        //Uvedení proměnné st do původního stavu
+                        if(!tokenString(&val)) {
+                            val.string = token->val.c;
+                            token->val.c = NULL;
+                            return_eof_false(token);
+                        }
+
                         return true;
-                    }
-                    //Pokud nejde o klíčové slovo uloží se id do tokenu
-                    token->type = token_id;
-                    token->val.c = val.string;
-
-                    //Uvedení proměnné st do původního stavu
-                    if(!tokenString(&val)) {
-                        val.string = token->val.c;
-                        token->val.c = NULL;
-                        return_eof_false(token);
-                    }
-
-                    return true;
+                        }
                 }
                 break;
 
