@@ -401,7 +401,7 @@ bool get_next_token(FILE *f, Token_t *token) {
             //Řádkový komentář
             case COMMENT_LINE:
                 if(c == '\n') {
-                    stav = TAB;
+                    stav = NIC;
                     ungetc(c, f);
                 }
                 break;
