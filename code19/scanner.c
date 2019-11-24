@@ -1177,7 +1177,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string here format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
                 }
