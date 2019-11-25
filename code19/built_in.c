@@ -41,24 +41,31 @@ void builtin_print(char* act_f){
             push_list("DEFVAR","GF@printvar",NULL,NULL);
             printvar=true;
         }
-        while(token->type == token_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id){
+        while(token->type == token_string || token->type == token_doc_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id){
             switch(token->type){
-                case(39)://string
+                case(token_string)://string
                     print_string=realloc(print_string,sizeof(char)*strlen(token->val.c)*2);
                     print_string=string_ready(token->val.c);
                     str=realloc(str,sizeof(char)*(strlen(token->val.c)+7));
                     sprintf(str,"string@%s",print_string);
                     push_list("WRITE", strdup(str),NULL,NULL);
                     break;
-                case(37)://int
+                case(token_doc_string)://blok string
+                    print_string=realloc(print_string,sizeof(char)*strlen(token->val.c)*2);
+                    print_string=string_ready(token->val.c);
+                    str=realloc(str,sizeof(char)*(strlen(token->val.c)+7));
+                    sprintf(str,"string@%s",print_string);
+                    push_list("WRITE", strdup(str),NULL,NULL);
+                    break;
+                case(token_val_int)://int
                     sprintf(str,"int@%d",token->val.i);
                     push_list("WRITE", strdup(str),NULL,NULL);
                     break;
-                case(38)://float
+                case(token_val_float)://float
                     sprintf(str,"float@%a",token->val.d);
                     push_list("WRITE", strdup(str),NULL,NULL);
                     break;
-                case(36)://Promenna
+                case(token_id)://Promenna
                     if(stl_search(tabulka, token->val.c, act_f)){
                         sprintf(str,"LF@%s",token->val.c);
                         push_list("WRITE", strdup(str),NULL,NULL);

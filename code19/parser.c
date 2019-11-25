@@ -290,7 +290,7 @@ bool PROG(){
                 //return PROG();
             }
         }
-    } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass) {
+    } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass || token->type == token_doc_string) {
         return PROG();
     }else if(token->type == token_eof){
 //        printf("eof->koncim\n");
