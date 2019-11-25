@@ -290,6 +290,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                     //Stejné odsazení
                     } else {
                         stav = NIC;
+                        val_tab = 0;
                     }
                 }
                 break;
