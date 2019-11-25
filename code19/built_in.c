@@ -38,7 +38,7 @@ void builtin_print(char* act_f){
         }
         static bool printvar=false;
         if(printvar==false){
-            push_list("DEFVAR","GF@printvar",NULL,NULL);
+            //push_list("DEFVAR","GF@printvar",NULL,NULL);
             printvar=true;
         }
         while(token->type == token_string || token->type == token_doc_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id){

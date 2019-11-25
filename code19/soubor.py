@@ -1,8 +1,7 @@
-a=ord('asdasd',1)
-b=substr('abcdefgh',3,5)
-c=len('1234567')
-d=chr(115)
-print('Ord: ',a,'\n')
-print('Substr: ',b,'\n')
-print('Len: ',c,'\n')
-print('chr: ',d,'\n')
+a=7
+while a > 5:
+	a=a-1
+	print('Num: ',a,'\n')
+	if a == 6:
+		print('NUM JE 6ka','\n')
+print('done')

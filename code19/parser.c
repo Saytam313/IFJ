@@ -142,7 +142,7 @@ bool STATEMENT_LIST(){
         token->type == token_ord  ||  token->type == token_chr  || token->type == token_if || token->type == token_while ||
         token->type == token_val_float || token->type == token_val_int || token->type == token_string){
         return STATEMENT()&& STATEMENT_LIST();
-    } else if(token->type == token_else || token->type == token_end){
+    } else if(token->type == token_else || token->type == token_dedent){
         last_token = *token;
         get_next_token(f, token);
         return true;
@@ -203,35 +203,52 @@ bool STATEMENT(){
         S_Push(label_Stack, elselabel);
         push_list ("POPS", "GF@$result", NULL, NULL);
         push_list("NOT", "GF@$result", "GF@$result", NULL);
-        push_list("JUMPIFEQS", elselabel , "GF@$result", "int@1");
+        push_list("JUMPIFEQ", elselabel , "GF@$result", "bool@true");
 
         if(token->type == token_colon){
             get_next_token(f, token);
-//            printf("thentoken type je %d\n", token->type);
+            //printf("thentoken type je %d\n", token->type);
             if(token->type == token_eol){
-                //get_next_token(f, token);
-                //printf("thentoken type je %d\n", token->type);
-//                printf("jdu na statement list\n");
-                if(STATEMENT_LIST()){
+                get_next_token(f, token);
+                if(token->type == token_indent){
+                    get_next_token(f, token);
+                    //get_next_token(f, token);
+                    //printf("thentoken type je %d\n", token->type);
+                    //printf("jdu na statement list\n");
+                    if(STATEMENT_LIST()){
 
-                    elselabel = S_Top(label_Stack);
-                    S_Pop(label_Stack);
-                    push_list("JUMP", endlabel, NULL, NULL);
-                    push_list("LABEL", elselabel, NULL, NULL);
-//                    printf("lasttoken type je %d\n", last_token.type);
-//                    printf("token type ma byt else %d\n", token->type);
-                    if(last_token.type == token_else){
-                        //get_next_token(f, token);
-                        if(token->type== token_eol){
+                        elselabel = S_Top(label_Stack);
+                        S_Pop(label_Stack);
+                        push_list("JUMP", endlabel, NULL, NULL);
+                        push_list("LABEL", elselabel, NULL, NULL);
+                        //printf("lasttoken type je %d\n", last_token.type);
+                        //printf("token type ma byt else %d\n", token->type);
+                        if(last_token.type == token_dedent){
                             //get_next_token(f, token);
-//                            printf("jdu na statement list\n");
-                            if(STATEMENT_LIST()){
+                            if(token->type == token_else){
+                                get_next_token(f, token);
+                                if(token->type == token_colon){
+                                    get_next_token(f, token);
+                                    if(token->type== token_eol){
+                                        get_next_token(f, token);
+                                        if(token->type == token_indent){
+                                            get_next_token(f, token);
+                                            if(STATEMENT_LIST()){
+                                                endlabel = S_Top(label_Stack);
+                                                S_Pop(label_Stack);
+                                                push_list("LABEL", endlabel, NULL, NULL);
+                                                if(last_token.type == token_dedent){
+                                                    return true;
+                                                }
+                                        }
+                                        }
+                                    }
+                                }
+                            }else{
                                 endlabel = S_Top(label_Stack);
                                 S_Pop(label_Stack);
                                 push_list("LABEL", endlabel, NULL, NULL);
-                                if(last_token.type == token_end){
-                                    return true;
-                                }
+                                return true;    
                             }
                         }
                     }
@@ -250,21 +267,25 @@ bool STATEMENT(){
         S_Push(label_Stack, whilelabel);
         expression(current_function, NULL);
         push_list ("POPS", "GF@$result", NULL, NULL);
-        push_list("NOT", "GF@$result", NULL, NULL);
-        push_list("JUMPIFEQS", whilendlabel , "GF@$result", "int@1");
-        if(token->type == token_do){
+        push_list("NOT", "GF@$result", "GF@$result", NULL);
+        push_list("JUMPIFEQ", whilendlabel , "GF@$result", "bool@true");
+        if(token->type == token_colon){
             get_next_token(f, token);
-//            printf("dotoken je \n", token->type);
-            if(token->type== token_eol){
-                if(STATEMENT_LIST()){
-                    whilelabel = S_Top(label_Stack);
-                    S_Pop(label_Stack);
-                    whilendlabel = S_Top(label_Stack);
-                    S_Pop(label_Stack);
-                    push_list("JUMP", whilelabel, NULL, NULL);
-                    push_list("LABEL", whilendlabel, NULL, NULL);
-                    if(last_token.type == token_end){
-                        return true;
+            if(token->type == token_eol){
+                get_next_token(f,token);
+                //printf("dotoken je \n", token->type);
+                if(token->type == token_indent){
+                    get_next_token(f, token);
+                    if(STATEMENT_LIST()){
+                        whilelabel = S_Top(label_Stack);
+                        S_Pop(label_Stack);
+                        whilendlabel = S_Top(label_Stack);
+                        S_Pop(label_Stack);
+                        push_list("JUMP", whilelabel, NULL, NULL);
+                        push_list("LABEL", whilendlabel, NULL, NULL);
+                        if(last_token.type == token_dedent){
+                            return true;
+                        }
                     }
                 }
             }
@@ -280,7 +301,11 @@ bool STATEMENT(){
 }
 
 bool PROG(){
-    get_next_token(f, token);
+    if(last_token.type != token_dedent){
+        get_next_token(f, token);
+    }else{
+        last_token = *token;
+    }
     //printf("token type %d\n", token->type);
     if(token->type == token_def){
         if(DEF()){
@@ -290,7 +315,7 @@ bool PROG(){
                 //return PROG();
             }
         }
-    } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass || token->type == token_doc_string) {
+    } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass || token->type == token_doc_string ) {
         return PROG();
     }else if(token->type == token_eof){
 //        printf("eof->koncim\n");
@@ -300,7 +325,7 @@ bool PROG(){
         if(STATEMENT() == true){
             //get_next_token(stdin, token);
 //            printf("token type je %d\n", token->type);
-            if(token->type == token_eol){
+            if(token->type == token_eol || last_token.type == token_dedent){
 //                printf("vracim prog\n", token->type);
                 return PROG();
             }
