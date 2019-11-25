@@ -261,6 +261,9 @@ bool get_next_token(FILE *f, Token_t *token) {
                     printf("LEX_ERR, Wrong tab format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
+                //Načtení řádkového komentáře
+                } else if(c == '#') {
+                    stav = COMMENT_LINE;
                 //Načtení konce odsazení
                 } else {
                     ungetc(c, f);
