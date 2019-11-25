@@ -140,7 +140,7 @@ bool STATEMENT_LIST(){
     if(token->type == token_id ||  token->type == token_print  || token->type == token_inputf
         ||  token->type == token_inputi  ||  token->type == token_inputs   ||  token->type == token_length  ||  token->type == token_substr  ||
         token->type == token_ord  ||  token->type == token_chr  || token->type == token_if || token->type == token_while ||
-        token->type == token_val_float || token->type == token_val_int || token->type == token_string){
+        token->type == token_val_float || token->type == token_val_int || token->type == token_string || token->type == token_pass){
         return STATEMENT()&& STATEMENT_LIST();
     } else if(token->type == token_else || token->type == token_dedent){
         last_token = *token;

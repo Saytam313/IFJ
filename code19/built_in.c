@@ -41,7 +41,7 @@ void builtin_print(char* act_f){
             //push_list("DEFVAR","GF@printvar",NULL,NULL);
             printvar=true;
         }
-        while(token->type == token_string || token->type == token_doc_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id){
+        while(token->type == token_string || token->type == token_doc_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id || token->type == token_nil){
             switch(token->type){
                 case(token_string)://string
                     print_string=realloc(print_string,sizeof(char)*strlen(token->val.c)*2);
@@ -73,6 +73,9 @@ void builtin_print(char* act_f){
                         fprintf(stderr,"1 builtin_print error type:%d\n", 3);
                         exit(3);
                     }
+                    break;
+                case(token_nil)://None
+                    push_list("WRITE", "string@None",NULL,NULL);
                     break;
                 default:
                     fprintf(stderr, "2 builtin_print error type:%d\n", 2);
@@ -118,10 +121,10 @@ void builtin_print(char* act_f){
                 //free(str);
                 //free(print_string);
                 exit(2);
-                return;
             }
             get_next_token(f,token);
         }
+        push_list("WRITE", "string@\\010",NULL,NULL);
 }
 
 void builtin_inputi(char* res_var){
@@ -163,15 +166,15 @@ void builtin_length(char* id, char* act_func){
             }
             char tmp [100];
             sprintf(str,"LF@%s", token->val.c);
-            push_list("TYPE","GF@type1", str, NULL);
-            push_list("JUMPIFNEQ","$error4", "GF@type1", "string@string");
+            push_list("TYPE","GF@$type1", str, NULL);
+            push_list("JUMPIFNEQ","$error4", "GF@$type1", "string@string");
             if(id != NULL){
                 sprintf(tmp, "LF@%s", id);
                 push_list("STRLEN", tmp, str ,NULL);
                 push_list("PUSHS", tmp, NULL, NULL);
             } else {
-                push_list("STRLEN", "GF@type2", str ,NULL);
-                push_list("PUSHS", "GF@type2", NULL, NULL);
+                push_list("STRLEN", "GF@$type2", str ,NULL);
+                push_list("PUSHS", "GF@$type2", NULL, NULL);
             }
         }
     }

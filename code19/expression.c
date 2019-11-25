@@ -45,6 +45,9 @@ char* get_name(Token_t tok){
     case token_string:
         vysledek = concat("string@", tok.val.c);
         break;
+    case token_nil:
+        vysledek = "nil@nil";
+        break;
     default:
         break;
     }
@@ -93,14 +96,14 @@ bool compare_op(Token_t top){
 }
 
 bool is_builtin_f(){
-    if((token->type >= token_inputs && token->type <= token_substr)||token->type==token_chr){
+    if((token->type >= token_inputs && token->type <= token_substr && token->type != token_nil )||token->type==token_chr){
         return true;
     }
     return false;
 }
 
 bool is_operand(){
-    if(token->type >= token_id && token->type <= token_string){
+    if(token->type >= token_id && token->type <= token_string || token->type == token_nil){
         return true;
     }
     return false;
@@ -300,7 +303,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
 //    printf("pred operand2: %d\n", act_token.type);
 
     
-    if( act_token.type >= token_id && act_token.type <= token_string){
+    if( act_token.type >= token_id && act_token.type <= token_string || act_token.type == token_nil ){
         operand1 = act_token;
 //        printf("operand1: %d\n", operand1.type);
         S_Pop(postfix_stack);
@@ -327,7 +330,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         act_token = S_Top_token(postfix_stack);
     }
 
-    if( act_token.type >= token_id && act_token.type <= token_string){
+    if( act_token.type >= token_id && act_token.type <= token_string || act_token.type == token_nil ){
         operand2 = act_token;
 //        printf("operand2: %d\n", operand2.type);
         S_Pop(postfix_stack);
@@ -373,6 +376,8 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
     //    push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
     //}
     push_list("JUMPIFEQ", str_num("$sametype", sametype_count), "GF@$type1", "GF@$type2");
+    push_list("JUMPIFEQ", str_num("$sametype", sametype_count), "GF@$type1", "string@nil");
+    push_list("JUMPIFEQ", str_num("$sametype", sametype_count), "GF@$type2", "string@nil");
     push_list("JUMPIFEQ", "$error4", "GF@$type1", "string@string");
     push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
 
