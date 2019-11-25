@@ -230,8 +230,14 @@ bool get_next_token(FILE *f, Token_t *token) {
         if(c == EOF) {
             c = '\n';
 
-            if(stav == NIC) {
+            if(stav == NIC && act == 0) {
                 set_eof = true;
+            } else {
+                ungetc(c, f);
+
+                token->type = token_dedent;
+                act--;
+                return true;
             }
         }
 
@@ -264,6 +270,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení řádkového komentáře
                 } else if(c == '#') {
                     stav = COMMENT_LINE;
+                    val_tab = 0;
                 //Načtení konce odsazení
                 } else {
                     ungetc(c, f);
@@ -275,6 +282,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                         }
                         token->type = token_indent;
                         stav = NIC;
+                        val_tab = 0;
                         return true;
                     //Menší odsazení
                     } else if(buffer[act] > val_tab) {
@@ -292,10 +300,12 @@ bool get_next_token(FILE *f, Token_t *token) {
                 if(buffer[act] > val_tab) {
                     token->type = token_dedent;
                     act--;
+                    val_tab = 0;
                     return true;
                 //Nalezení odsazení
                 } else if(buffer[act] == val_tab) {
                     stav = NIC;
+                    val_tab = 0;
                 //Špatné odsazení
                 } else if(buffer[act] < val_tab) {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
