@@ -385,7 +385,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                                 return true;
                             }
                             break;
-                        case 13:    //nacteni
+                        case '\r':    //nacteni
                             continue;
 
                         default:    //nacteni neznámého symbolu
