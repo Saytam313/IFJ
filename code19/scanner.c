@@ -904,13 +904,16 @@ bool get_next_token(FILE *f, Token_t *token) {
 
             //Dokumentacni retezec zacatek
             case STRING_DOC_START:
-                if(c == '"') {
-                    if(str_doc <= 3) {
-                        str_doc++;
-                    } else {
-                        str_doc = 0;
-                        stav = STRING_DOC;
-                    }
+                // Načítání začátku komentáře
+                if(c == '"' && str_doc < 3) {
+                    str_doc++;
+                // Načtení správného začátku komentáře
+                } else if(c != '"' && str_doc == 3) {
+                    str_doc = 0;
+                    ungetc(c, f);
+
+                    stav = STRING_DOC;
+                //Načtení špatného začátku komentáře
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
                     printf("LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
@@ -1177,7 +1180,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    printf("LEX_ERR, Wrong string here format: 0x%02x at line: %d\n", c, line);
+                    printf("LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
                     return_eof_false(token);
                     exit(1);
                 }
