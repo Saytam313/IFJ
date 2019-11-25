@@ -273,9 +273,10 @@ bool get_next_token(FILE *f, Token_t *token) {
                     val_tab = 0;
                 //Načtení konce odsazení
                 } else {
-                    ungetc(c, f);
                     //Větší odsazení
                     if(buffer[act] < val_tab) {
+                        ungetc(c, f);
+                        
                         act++;
                         if(!(buffer[act] = val_tab)) {
                             exit(99);
@@ -286,6 +287,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                         return true;
                     //Menší odsazení
                     } else if(buffer[act] > val_tab) {
+                        ungetc(c, f);
+                        
                         stav = DED;
                     //Stejné odsazení
                     } else {
@@ -299,7 +302,7 @@ bool get_next_token(FILE *f, Token_t *token) {
             case DED:
                 //Výpis o kolik je odsazení menší
                 ungetc(c, f);
-                
+
                 if(buffer[act] > val_tab) {
                     token->type = token_dedent;
                     act--;
