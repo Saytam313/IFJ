@@ -298,6 +298,8 @@ bool get_next_token(FILE *f, Token_t *token) {
             //Menší odsazení
             case DED:
                 //Výpis o kolik je odsazení menší
+                ungetc(c, f);
+                
                 if(buffer[act] > val_tab) {
                     token->type = token_dedent;
                     act--;
