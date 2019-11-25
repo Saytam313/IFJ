@@ -300,7 +300,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                 if(buffer[act] > val_tab) {
                     token->type = token_dedent;
                     act--;
-                    val_tab = 0;
                     return true;
                 //Nalezení odsazení
                 } else if(buffer[act] == val_tab) {
