@@ -238,7 +238,7 @@ bool get_next_token(FILE *f, Token_t *token) {
         token->line = line;
 
         //Novy radek
-        if(new_line && !set_eof && c != '\n' && != '\r') {
+        if(new_line && !set_eof && c != '\n' && c != '\r') {
             stav = TAB;
             new_line = false;
         } 
