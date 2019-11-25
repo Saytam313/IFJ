@@ -1172,7 +1172,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                     ungetc(c, f);
 
                     stav = NIC;
-                    token->type = token_string;
+                    token->type = token_string_doc;
                     //Uložení řetězce
                     token->val.c = val.string;
 
