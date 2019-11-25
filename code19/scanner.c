@@ -972,6 +972,8 @@ bool get_next_token(FILE *f, Token_t *token) {
                     if(!tokenStringPridChar(&val, '0')) {
                         return_eof_false(token);
                     }
+                } else if(c == '\r') {
+                    continue;
                 //Načtení konce řetězce
                 } else if(c == '"') {
                     stav = STRING_DOC_END;
