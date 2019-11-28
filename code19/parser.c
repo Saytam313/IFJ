@@ -141,7 +141,7 @@ bool DEF (){
 bool STATEMENT_LIST(){
     //get_next_token(stdin, token);
 //    printf("statementlist token type je %d\n", token->type);
-    while(token->type == token_eol){
+    while(token->type == token_eol || token->type == token_pass){
         get_next_token(f, token);
     }
     if(token->type == token_id ||  token->type == token_print  || token->type == token_inputf
@@ -160,7 +160,7 @@ bool STATEMENT_LIST(){
 
 bool STATEMENT(){
 //    printf("start STATEMENT\n");
-    if(token->type == token_eol){
+    if(token->type == token_eol || token->type == token_pass){
         return true;
     } else if(token->type >= token_inputs && token->type <= token_substr){
         expression(current_function, NULL);
