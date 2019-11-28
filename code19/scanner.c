@@ -227,10 +227,10 @@ bool get_next_token(FILE *f, Token_t *token) {
     while(!set_eof) {
         c = getc(f);
 
-        if(c == EOF) {
+        if(c == EOF && stav == NIC) {
             c = '\n';
 
-            if(stav == NIC && act == 0) {
+            if(act == 0) {
                 set_eof = true;
             } else {
                 ungetc(c, f);
