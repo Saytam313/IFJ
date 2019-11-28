@@ -97,29 +97,36 @@ bool DEF (){
 
         push_list("JUMP", get_label_name(stl_number_of_func(tabulka), 'm'), NULL, NULL);
         push_list ("LABEL", token->val.c, NULL, NULL);
-//        printf("label name: %s", token->val.c );
+        //printf("label name: %s", token->val.c );
         push_list ("PUSHFRAME", NULL, NULL, NULL);
-//        push_list ("CREATEFRAME", NULL, NULL, NULL);
+        //push_list ("CREATEFRAME", NULL, NULL, NULL);
         push_list ("DEFVAR", "LF@%retval", NULL, NULL);
         push_list ("MOVE", "LF@%retval", "nil@nil", NULL);
 
         get_next_token(f, token);
-//        printf("token type je %d\n", token->type);
+        //printf("token type je %d\n", token->type);
         if(token->type == token_left_bracket){
             if(DEF_PARAM_LIST()){
                 get_next_token(f, token);
-                if(token->type == token_eol){
-                    //get_next_token(f, token);
-//                    printf("jdu na statement list\n");
-                    if(STATEMENT_LIST()){
-//                        printf("prosel jsem statement list\n");
-                        if(last_token.type == token_end){
-                            current_function = "Main";
-//                            printf("prosel jsem def\n");
-                            push_list ("POPFRAME", NULL, NULL, NULL);
-                            push_list ("RETURN", NULL, NULL, NULL);
-                            push_list("LABEL", get_label_name(stl_number_of_func(tabulka), 'm'), NULL, NULL);
-                            return true;
+                if(token->type == token_colon){
+                    get_next_token(f, token);
+                    if(token->type == token_eol){
+                        get_next_token(f, token);
+                        if(token->type == token_indent){
+                            get_next_token(f, token);                                
+                            //get_next_token(f, token);
+                            //printf("jdu na statement list\n");
+                            if(STATEMENT_LIST()){
+                                //printf("prosel jsem statement list\n");
+                                if(last_token.type == token_dedent){
+                                    current_function = "Main";
+                                    //printf("prosel jsem def\n");
+                                    push_list ("POPFRAME", NULL, NULL, NULL);
+                                    push_list ("RETURN", NULL, NULL, NULL);
+                                    push_list("LABEL", get_label_name(stl_number_of_func(tabulka), 'm'), NULL, NULL);
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }
@@ -313,9 +320,9 @@ bool PROG(){
     if(token->type == token_def){
         if(DEF()){
             //get_next_token(stdin, token);
-            if(token->type == token_eol){
+            if(token->type == token_eol || last_token.type == token_dedent){
                 //printf("prosel jsem prog_def\n");
-                //return PROG();
+                return PROG();
             }
         }
     } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass || token->type == token_doc_string ) {

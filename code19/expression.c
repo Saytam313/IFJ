@@ -217,7 +217,7 @@ void user_f(char* act_func, char* id){
             push_list("MOVE", get_par_name(i), get_float_name(token->val.d), NULL);
         } else if(token->type == token_string){
             push_list("DEFVAR", get_par_name(i), NULL, NULL);
-            push_list("MOVE", get_par_name(i), strcat("string@" ,token->val.c), NULL);
+            push_list("MOVE", get_par_name(i), concat("string@" ,token->val.c), NULL);
         } else if(token->type == token_id){
             if(!stl_search(tabulka, token->val.c, act_func)){
                fprintf(stderr, "1. user_f error type: %d\n", 3);
@@ -574,11 +574,11 @@ void infix_postfix(char* act_func, char* id){
     if(id != NULL){
         push_list("POPS", concat("LF@", id), NULL, NULL);
         if(strcmp(act_func, "Main")){
-            push_list("MOVE", "LF@retval", concat("LF@", id), NULL);
+            push_list("MOVE", "LF@%retval", concat("LF@", id), NULL);
         }
     }else {
         if(!logic){
-            push_list("POPS", "LF@retval", NULL, NULL);
+            push_list("POPS", "LF@%retval", NULL, NULL);
         }
     }
     S_free(output_stack);
