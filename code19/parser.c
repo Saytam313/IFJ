@@ -147,7 +147,7 @@ bool STATEMENT_LIST(){
     if(token->type == token_id ||  token->type == token_print  || token->type == token_inputf
         ||  token->type == token_inputi  ||  token->type == token_inputs   ||  token->type == token_length  ||  token->type == token_substr  ||
         token->type == token_ord  ||  token->type == token_chr  || token->type == token_if || token->type == token_while ||
-        token->type == token_val_float || token->type == token_val_int || token->type == token_string || token->type == token_pass){
+        token->type == token_val_float || token->type == token_val_int || token->type == token_string || token->type == token_pass || token->type == token_return){
         return STATEMENT()&& STATEMENT_LIST();
     } else if(token->type == token_else || token->type == token_dedent){
         last_token = *token;
@@ -300,6 +300,17 @@ bool STATEMENT(){
     } else if(token->type >= token_val_int && token->type <= token_string){
         expression(current_function, NULL);
         return true;
+    } else if(token->type == token_return){
+        if(strcmp(current_function,"Main")!=0){
+            get_next_token(f, token);
+            expression(current_function,"%retval");
+            //push_list("MOVE","LF@%retval", NULL, NULL);
+            return true;
+
+
+        }
+
+
     }
     fprintf(stderr, "2 STATEMENT error type: %d\n", 2);
     exit(2);

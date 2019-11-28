@@ -270,7 +270,7 @@ void user_f(char* act_func, char* id){
     push_list("CALL", func, NULL, NULL);
     if(id != NULL){
 //        printf("%s\n", id);
-        push_list("MOVE", concat("LF@", id), "TF@retval", NULL);
+        push_list("MOVE", concat("LF@", id), "TF@%retval", NULL);
     }
 //    printf("konec user_f\n");
 }
@@ -488,21 +488,21 @@ void infix_postfix(char* act_func, char* id){
     if(id == NULL){
         if(token->type != token_left_bracket){
             tmp = *token;
-        get_next_token(f, token);
-        if(token->type == token_equal){
-            id = tmp.val.c;
             get_next_token(f, token);
-        } else {
-            if(tmp.type == token_id){
-                if(!stl_search(tabulka, tmp.val.c, act_func)){
-                        fprintf(stderr, "1. infix_postfix error type: %d\n", 3);
-                        exit(3);
-                        return;
+            if(token->type == token_equal){
+                id = tmp.val.c;
+                get_next_token(f, token);
+            } else {
+                if(tmp.type == token_id){
+                    if(!stl_search(tabulka, tmp.val.c, act_func)){
+                            fprintf(stderr, "1. infix_postfix error type: %d\n", 3);
+                            exit(3);
+                            return;
+                    }
                 }
+                sum_count--;
+                S_Push_Token(output_stack, tmp);
             }
-            sum_count--;
-            S_Push_Token(output_stack, tmp);
-        }
         }
 
 
