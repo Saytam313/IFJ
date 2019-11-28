@@ -21,10 +21,11 @@ char* string_ready(char* string){
 }
 
 void builtin_print(char* act_f){
-        bool zavorky = false;
         if(token->type == token_left_bracket){
-            zavorky=true;
             get_next_token(f,token);
+        }else{
+            fprintf(stderr, "3 builtin_print error type: %d", 2);
+            exit(2);
         }
         char *str;
         if((str=malloc(sizeof(float)*sizeof(char*)*20))==NULL){
@@ -36,11 +37,7 @@ void builtin_print(char* act_f){
             fprintf(stderr,"Memory error\n");
             exit(99);
         }
-        static bool printvar=false;
-        if(printvar==false){
-            //push_list("DEFVAR","GF@printvar",NULL,NULL);
-            printvar=true;
-        }
+
         while(token->type == token_string || token->type == token_doc_string || token->type == token_val_int || token->type == token_val_float || token->type == token_id || token->type == token_nil){
             switch(token->type){
                 case(token_string)://string
@@ -85,42 +82,24 @@ void builtin_print(char* act_f){
             get_next_token(f,token);
             if(token->type==token_comma){
                 ;//toto nemazat, ma tu byt samostatnej strednik
-            }else if(zavorky==true){
-                    if(token->type==token_right_bracket){
-                        //free(str);
-                        //free(print_string);
-                        get_next_token(f, token);
-                        if(token->type == token_eol){
-                            break;
-                        }else{
-                            fprintf(stderr, "3 builtin_print error type: %d", 2);
-                            exit(2);
-                        }
-                    }else{
-                        //free(str);
-                        //free(print_string);
-                        fprintf(stderr, "4 builtin_print error type: %d", 2);
-                        exit(2);
-                        //error print nekonci zavorkou a mel by
-                    }
-            }else if(token->type==token_eol){
-                //konec print prikazu
-                //free(str);
-                //free(print_string);
-                break;
-            }else if(token->type==token_eof){
-                //free(str);
-                //free(print_string);
-                break;
-            }else if (token->type==token_print){
-                //free(str);
-                //free(print_string);
-                break;
             }else{
-                fprintf(stderr, "5 builtin_print error type:%d\n", 2);
-                //free(str);
-                //free(print_string);
-                exit(2);
+                if(token->type==token_right_bracket){
+                    //free(str);
+                    //free(print_string);
+                    get_next_token(f, token);
+                    if(token->type == token_eol || token->type == token_dedent){
+                        break;
+                    }else{
+                        fprintf(stderr, "3 builtin_print error type: %d", 2);
+                        exit(2);
+                    }
+                }else{
+                    //free(str);
+                    //free(print_string);
+                    fprintf(stderr, "4 builtin_print error type: %d", 2);
+                    exit(2);
+                    //error print nekonci zavorkou a mel by
+                }
             }
             get_next_token(f,token);
         }
@@ -145,10 +124,11 @@ void builtin_inputs(char* res_var){
 
 void builtin_length(char* id, char* act_func){
     //get_next_token(f, token);
-    bool zavorky = false;
     if(token->type == token_left_bracket){
-        zavorky=true;
         get_next_token(f,token);
+    }else{
+        fprintf(stderr, "2 builtin_length error type: %d", 2);
+        exit(2);
     }
     char str[100];
     if(token->type == token_id || token->type == token_string){
@@ -179,14 +159,14 @@ void builtin_length(char* id, char* act_func){
         }
     }
     get_next_token(f, token);
-    if(zavorky){
-        if(token->type == token_right_bracket){
-            get_next_token(f, token);
-        } else {
-            fprintf(stderr, "2 builtin_length error type: %d", 2);
-            exit(2);
-        }
+
+    if(token->type == token_right_bracket){
+        get_next_token(f, token);
+    } else {
+        fprintf(stderr, "2 builtin_length error type: %d", 2);
+        exit(2);
     }
+    
     if(token->type == token_eol){
         return;
     }else{

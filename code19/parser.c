@@ -304,6 +304,9 @@ bool PROG(){
     if(last_token.type != token_dedent){
         get_next_token(f, token);
     }else{
+        if(token->type==token_dedent){
+            get_next_token(f, token);
+        }
         last_token = *token;
     }
     //printf("token type %d\n", token->type);
@@ -325,7 +328,7 @@ bool PROG(){
         if(STATEMENT() == true){
             //get_next_token(stdin, token);
 //            printf("token type je %d\n", token->type);
-            if(token->type == token_eol || last_token.type == token_dedent){
+            if(token->type == token_eol || last_token.type == token_dedent || token->type == token_dedent){
 //                printf("vracim prog\n", token->type);
                 return PROG();
             }
