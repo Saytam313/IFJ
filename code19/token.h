@@ -45,30 +45,31 @@ typedef enum {
     token_minus,            // 20
     token_mul,              // 21
     token_div,              // 22
+    token_div_div,          // 23
 
-    token_less_equal,       // 23
-    token_less,             // 24
-    token_great_equal,      // 25
-    token_great,            // 26
-    token_neg_equal,        // 27
-    token_equal_equal,      // 28
+    token_less_equal,       // 24
+    token_less,             // 25
+    token_great_equal,      // 26
+    token_great,            // 27
+    token_neg_equal,        // 28
+    token_equal_equal,      // 29
 
-    token_left_bracket,     // 29
-    token_right_bracket,    // 30
-    token_comma,            // 31
-    token_equal,            // 32
-    token_colon,            // 33
+    token_left_bracket,     // 30
+    token_right_bracket,    // 31
+    token_comma,            // 32
+    token_equal,            // 33
+    token_colon,            // 34
 
-    token_eol,              // 34
-    token_eof,              // 35
+    token_eol,              // 35
+    token_eof,              // 36
 
-    token_id,               // 36
-    token_val_int,          // 37
-    token_val_float,        // 38
-    token_string,           // 39
+    token_id,               // 37
+    token_val_int,          // 38
+    token_val_float,        // 39
+    token_string,           // 40
 
-    token_indent,           // 40
-    token_dedent,           // 41
+    token_indent,           // 41
+    token_dedent,           // 42
 
     token_test
 
