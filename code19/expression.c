@@ -139,7 +139,7 @@ void righ_parenth(stack_t* output_stack, stack_t* operator_stack){
 }
 
 bool is_arithmetic_operator(){
-    if(token->type >= token_plus && token->type <= token_div){
+    if(token->type >= token_plus && token->type <= token_div_div){
         return true;
     }
     return false;
@@ -292,7 +292,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
     int oper1_val_type=0;
     int oper2_val_type=0;
 
-    if( (act_token.type >= token_plus && act_token.type <= token_div) ||
+    if( (act_token.type >= token_plus && act_token.type <= token_div_div) ||
         (act_token.type >= token_less_equal && act_token.type <= token_equal_equal)){
         operator_tok = act_token;
 //        printf("operator_tok: %d\n", operator_tok.type);
@@ -450,6 +450,14 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("LABEL", str_num("$done", div_count), NULL,NULL);
         div_count++;
         break;
+    case token_div_div:
+        push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
+        push_list("IDIVS", NULL, NULL,NULL);
+        push_list("JUMP", str_num("$done", div_count), NULL, NULL);
+        push_list("LABEL", str_num("$done", div_count), NULL,NULL);
+        div_count++;
+        break;
+
     case token_less_equal:
         push_list("GTS", NULL, NULL,NULL);
         push_list("NOTS", NULL, NULL,NULL);

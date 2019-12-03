@@ -4,7 +4,6 @@ factorial2.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [0
 factorial2.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [0]. - rekurzivni volani funkce
 buildin.py - Python and IFJ interprets have different outputs. - nevim, kdyz jsem to zkusil prelozit tak byl vysledek spravnej, mozna chyba v testech
 buildin.py - Python and IFJ interprets have different outputs. - nevim, kdyz jsem to zkusil prelozit tak byl vysledek spravnej, mozna chyba v testech
-badindent2.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [1]. - lex chyba, kterou by mel odhalit scanner
 badindent.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [1, 2]. - tezko rict proc by tohle mela byt chyba, asi bude potreba se podivat do zadani
 badreturn.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [2]. - tohle mi prijde taky jako spravne, takze asi zase se podivat do zadani
 badvar3.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [3]. - spatnej exit code, jestli to spravne chapu tak je chyba v tom ze nesmi byt global promenna jako vlastni funkce, python to prebere ale nas projekt asi ne, je potreba se podivat co pisou v zadani, mozna chyba v testech.
@@ -13,12 +12,9 @@ badfunction9.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [3].
 badfunction10.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [3]. - spatnej exit code, volani neexistujici funkce
 badcall4.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [5]. - spatnej exit code, davani parametru funkci ktera je nema mit
 badcall5.py - Unexpected exit code of IFJ compiler. Actual: 3 Expected: [5]. - spatnej exit code, spousteni funkce bez parametru
-badtype6.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4]. - spatnej exit code, celociselne deleni float a int, to jeste nemame implementovane
-badtype7.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4]. - spatnej exit code, celociselne deleni int a float, to jeste nemame implementovane
 badtype8.py - Unexpected exit code of IFJ compiler. Actual: 6 Expected: [0, 4]. - spatnej exit code, porovnavani int a string
 badtype9.py - Unexpected exit code of IFJ compiler. Actual: 6 Expected: [0, 4]. - spatnej exit code, porovnavani float a string
 zerodiv.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [57, 9]. - spatnej exit, děleni nulou
-zerodiv2.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 9]. -  celociselne deleni nulou, to nemame jeste implementovane
 badbuildin.py - Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [53, 4]. - asi chybí check jestli je ve funkci len() parametr string
 badbuildin7.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4]. - spatnej pocet parametru
 badbuildin8.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4, 6]. - spatnej pocet parametru
