@@ -217,6 +217,7 @@ bool get_next_token(FILE *f, Token_t *token) {
 
     int stringEscVal = 0;
     int c = 0;
+    char a;
 
     //Pokud je konec souboru vrací se token konce souboru
     if(set_eof) {
@@ -784,15 +785,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
                     }
-                    if(!tokenStringPridChar(&val, '0')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '9')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '2')) {
-                        return_eof_false(token);
-                    }
                     stav = STRING;
                 //Načtení konce řádku a jeho uložení pomocí ASCII kódu
                 } else if(c == 'n') {
@@ -815,7 +807,12 @@ bool get_next_token(FILE *f, Token_t *token) {
                         return_eof_false(token);
                     }
                     stav = STRING;
-                //Načtení chyby vstupu
+                //Načtení uvozovek a jejich uložení
+                } else if(c == '\'') {
+                    if(!tokenStringPridChar(&val, '\'')) {
+                        return_eof_false(token);
+                    }
+                    stav = STRING;
                 } else {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
@@ -828,29 +825,47 @@ bool get_next_token(FILE *f, Token_t *token) {
                 break;
 
             //Hodnota znaku v 16 soustavě první číslice
-            case STRING_ESC_1:
-                if(isdigit(c) && c >= 'A' && c <= 'F') {
+            case STRING_ESC_1:                
+                if(isdigit(c) || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f') {
                     switch(c) {
                         case 'A':
-                            stringEscVal = 10;
+                            stringEscVal = 16*10;
+                            break;
+                        case 'a':
+                            stringEscVal = 16*10;
                             break;
                         case 'B':
-                            stringEscVal = 11;
+                            stringEscVal = 16*11;
+                            break;
+                        case 'b':
+                            stringEscVal = 16*11;
                             break;
                         case 'C':
-                            stringEscVal = 12;
+                            stringEscVal = 16*12;
+                            break;
+                        case 'c':
+                            stringEscVal = 16*12;
                             break;
                         case 'D':
-                            stringEscVal = 13;
+                            stringEscVal = 16*13;
+                            break;
+                        case 'd':
+                            stringEscVal = 16*13;
                             break;
                         case 'E':
-                            stringEscVal = 14;
+                            stringEscVal = 16*14;
+                            break;
+                        case 'e':
+                            stringEscVal = 16*14;
                             break;
                         case 'F':
-                            stringEscVal = 15;
+                            stringEscVal = 16*15;
+                            break;
+                        case 'f':
+                            stringEscVal = 16*15;
                             break;
                         default:
-                            stringEscVal = c;
+                            stringEscVal = 16*(c - '0');
                             break;
                     }
                     stav = STRING_ESC_2;
@@ -864,43 +879,50 @@ bool get_next_token(FILE *f, Token_t *token) {
 
             //Hodnota znaku v 16 soustavě druhé číslice
             case STRING_ESC_2:
-                if(isdigit(c) && c >= 'A' && c <= 'F') {
+                if(isdigit(c) || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f') {
                     switch(c) {
                         case 'A':
-                            stringEscVal += 16*10;
+                            stringEscVal += 10;
+                            break;
+                        case 'a':
+                            stringEscVal += 10;
                             break;
                         case 'B':
-                            stringEscVal += 16*11;
+                            stringEscVal += 11;
+                            break;
+                        case 'b':
+                            stringEscVal += 11;
                             break;
                         case 'C':
-                            stringEscVal += 16*12;
+                            stringEscVal += 12;
+                            break;
+                        case 'c':
+                            stringEscVal += 12;
                             break;
                         case 'D':
-                            stringEscVal += 16*13;
+                            stringEscVal += 13;
+                            break;
+                        case 'd':
+                            stringEscVal += 13;
                             break;
                         case 'E':
-                            stringEscVal += 16*14;
+                            stringEscVal += 14;
+                            break;
+                        case 'e':
+                            stringEscVal += 14;
                             break;
                         case 'F':
-                            stringEscVal += 16*15;
+                            stringEscVal += 15;
+                            break;
+                        case 'f':
+                            stringEscVal += 15;
                             break;
                         default:
-                            stringEscVal += 16*c;
+                            stringEscVal += c - '0';
                             break;
                     }
-                    char a[3]; //Pomocná proměnná na rozdělení kódu znaku na tři části
-
                     //Uložení kódu znaku v ASCII
-                    if(!tokenStringPridChar(&val, '\\')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[0])) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[1])) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[2])) {
+                    if(!tokenStringPridChar(&val, stringEscVal)) {
                         return_eof_false(token);
                     }
 
@@ -993,7 +1015,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong number format: 0x%02x at line: %d\n", c, line);
+                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 }
                 break;
@@ -1024,15 +1046,6 @@ bool get_next_token(FILE *f, Token_t *token) {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
                     }
-                    if(!tokenStringPridChar(&val, '0')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '9')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '2')) {
-                        return_eof_false(token);
-                    }
                     stav = STRING_DOC;
                 //Načtení konce řádku a jeho uložení pomocí ASCII kódu
                 } else if(c == 'n') {
@@ -1055,7 +1068,12 @@ bool get_next_token(FILE *f, Token_t *token) {
                         return_eof_false(token);
                     }
                     stav = STRING_DOC;
-                //Načtení chyby vstupu
+                //Načtení uvozovek a jejich uložení
+                } else if(c == '\'') {
+                    if(!tokenStringPridChar(&val, '\'')) {
+                        return_eof_false(token);
+                    }
+                    stav = STRING_DOC;
                 } else {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
@@ -1069,78 +1087,103 @@ bool get_next_token(FILE *f, Token_t *token) {
 
             //Hodnota znaku v 16 soustavě první číslice
             case STRING_DOC_ESC_1:
-                if(isdigit(c) && c >= 'A' && c <= 'F') {
+                if(isdigit(c) || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f') {
                     switch(c) {
                         case 'A':
-                            stringEscVal = 10;
+                            stringEscVal = 16*10;
+                            break;
+                        case 'a':
+                            stringEscVal = 16*10;
                             break;
                         case 'B':
-                            stringEscVal = 11;
+                            stringEscVal = 16*11;
+                            break;
+                        case 'b':
+                            stringEscVal = 16*11;
                             break;
                         case 'C':
-                            stringEscVal = 12;
+                            stringEscVal = 16*12;
+                            break;
+                        case 'c':
+                            stringEscVal = 16*12;
                             break;
                         case 'D':
-                            stringEscVal = 13;
+                            stringEscVal = 16*13;
+                            break;
+                        case 'd':
+                            stringEscVal = 16*13;
                             break;
                         case 'E':
-                            stringEscVal = 14;
+                            stringEscVal = 16*14;
+                            break;
+                        case 'e':
+                            stringEscVal = 16*14;
                             break;
                         case 'F':
-                            stringEscVal = 15;
+                            stringEscVal = 16*15;
+                            break;
+                        case 'f':
+                            stringEscVal = 16*15;
                             break;
                         default:
-                            stringEscVal = c;
+                            stringEscVal = 16*(c - '0');
                             break;
                     }
                     stav = STRING_DOC_ESC_2;
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 }
                 break;
 
             //Hodnota znaku v 16 soustavě druhé číslice
             case STRING_DOC_ESC_2:
-                if(isdigit(c) && c >= 'A' && c <= 'F') {
+                if(isdigit(c) || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f') {
                     switch(c) {
                         case 'A':
-                            stringEscVal += 16*10;
+                            stringEscVal += 10;
+                            break;
+                        case 'a':
+                            stringEscVal += 10;
                             break;
                         case 'B':
-                            stringEscVal += 16*11;
+                            stringEscVal += 11;
+                            break;
+                        case 'b':
+                            stringEscVal += 11;
                             break;
                         case 'C':
-                            stringEscVal += 16*12;
+                            stringEscVal += 12;
+                            break;
+                        case 'c':
+                            stringEscVal += 12;
                             break;
                         case 'D':
-                            stringEscVal += 16*13;
+                            stringEscVal += 13;
+                            break;
+                        case 'd':
+                            stringEscVal += 13;
                             break;
                         case 'E':
-                            stringEscVal += 16*14;
+                            stringEscVal += 14;
+                            break;
+                        case 'e':
+                            stringEscVal += 14;
                             break;
                         case 'F':
-                            stringEscVal += 16*15;
+                            stringEscVal += 15;
+                            break;
+                        case 'f':
+                            stringEscVal += 15;
                             break;
                         default:
-                            stringEscVal += 16*c;
+                            stringEscVal += c - '0';
                             break;
                     }
-                    char a[3]; //Pomocná proměnná na rozdělení kódu znaku na tři části
-
                     //Uložení kódu znaku v ASCII
-                    if(!tokenStringPridChar(&val, '\\')) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[0])) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[1])) {
-                        return_eof_false(token);
-                    }
-                    if(!tokenStringPridChar(&val, '0' + a[2])) {
+                    if(!tokenStringPridChar(&val, stringEscVal)) {
                         return_eof_false(token);
                     }
 
@@ -1148,7 +1191,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 }
                 break;
@@ -1189,7 +1232,7 @@ bool get_next_token(FILE *f, Token_t *token) {
                 //Načtení chyby vstupu
                 } else {
                     fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
-                    fprintf(stderr, "LEX_ERR, Wrong string format: 0x%02x at line: %d\n", c, line);
+                    fprintf(stderr, "LEX_ERR, Wrong doc. string format: 0x%02x at line: %d\n", c, line);
                     exit(1);
                 }
                 break;
