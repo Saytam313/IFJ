@@ -11,8 +11,8 @@
 
 #include "scanner.h"
 
-#define TOKEN_STRING_SIZE 255
-#define BUFFER_SIZE 512
+#define TOKEN_STRING_SIZE 1024
+#define BUFFER_SIZE 1024
 #define SUCCES 0
 #define LEX_ERR 1
 #define SYNT_ERR 2
