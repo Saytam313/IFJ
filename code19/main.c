@@ -19,7 +19,6 @@ int main()
 
 
    parse();
-   printf("\n\n");
    print_list();
 
    return 0;

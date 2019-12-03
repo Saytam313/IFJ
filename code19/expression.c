@@ -513,8 +513,14 @@ void infix_postfix(char* act_func, char* id){
         if(is_operand()){
             if(token->type == token_id){
                 if(!stl_search(tabulka, token->val.c, act_func)){
-                    fprintf(stderr, "2. infix_postfix error type: %d\n", 3);
-                    exit(3);
+                    get_next_token(f, token);
+                    if(token->type == token_left_bracket){
+                        exit(2);
+                    }else{
+                        
+                        fprintf(stderr, "2. infix_postfix error type: %d\n", 3);
+                        exit(3);
+                    }
                     return;
                 }
             }

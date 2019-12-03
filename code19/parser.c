@@ -201,6 +201,9 @@ bool STATEMENT(){
         return true;
     } else if(token->type == token_if){
         get_next_token(f, token);
+        if(token->type == token_colon || token->type == token_eol ){
+            exit(2);
+        }
         expression(current_function, NULL);
         static int ifcounter = 0;
         ifcounter++;
