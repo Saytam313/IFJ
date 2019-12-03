@@ -20,4 +20,5 @@ else:
   print('Vysledek je:', vysl)
 
   #   2 DEF error type: 2
+  #   jede
   #   předpokládám že ten return ve vlastní fci
