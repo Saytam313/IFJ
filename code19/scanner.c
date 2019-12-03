@@ -286,6 +286,15 @@ bool get_next_token(FILE *f, Token_t *token) {
                         return true;
                     //Menší odsazení
                     } else if(buffer[act] > val_tab) {
+                        for(int i = act; i >= 0; i--) {
+                            if(buffer[i] != val_tab && i == 0) {
+                                fprintf(stderr, "%s:%d %s:%d\n", "ERROR", LEX_ERR, "at line", line);
+                                fprintf(stderr, "LEX_ERR, Wrong tab format at line: %d\n", line);
+                                exit(1);
+                            } else if(buffer[i] == val_tab) {
+                                break;
+                            }
+                        }
                         stav = DED;
                     //Stejné odsazení
                     } else {
