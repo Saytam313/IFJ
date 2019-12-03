@@ -785,6 +785,15 @@ bool get_next_token(FILE *f, Token_t *token) {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
                     }
+                    if(!tokenStringPridChar(&val, '0')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '9')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '2')) {
+                        return_eof_false(token);
+                    }
                     stav = STRING;
                 //Načtení konce řádku a jeho uložení pomocí ASCII kódu
                 } else if(c == 'n') {
@@ -815,6 +824,15 @@ bool get_next_token(FILE *f, Token_t *token) {
                     stav = STRING;
                 } else {
                     if(!tokenStringPridChar(&val, '\\')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '0')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '9')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '2')) {
                         return_eof_false(token);
                     }
                     if(!tokenStringPridChar(&val, c)) {
@@ -1046,6 +1064,15 @@ bool get_next_token(FILE *f, Token_t *token) {
                     if(!tokenStringPridChar(&val, '\\')) {
                         return_eof_false(token);
                     }
+                    if(!tokenStringPridChar(&val, '0')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '9')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '2')) {
+                        return_eof_false(token);
+                    }
                     stav = STRING_DOC;
                 //Načtení konce řádku a jeho uložení pomocí ASCII kódu
                 } else if(c == 'n') {
@@ -1076,6 +1103,15 @@ bool get_next_token(FILE *f, Token_t *token) {
                     stav = STRING_DOC;
                 } else {
                     if(!tokenStringPridChar(&val, '\\')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '0')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '9')) {
+                        return_eof_false(token);
+                    }
+                    if(!tokenStringPridChar(&val, '2')) {
                         return_eof_false(token);
                     }
                     if(!tokenStringPridChar(&val, c)) {
