@@ -81,7 +81,7 @@ void builtin_print(char* act_f){
 
             get_next_token(f,token);
             if(token->type==token_comma){
-                ;//toto nemazat, ma tu byt samostatnej strednik
+                push_list("WRITE", "string@\\032",NULL,NULL);//toto nemazat, ma tu byt samostatnej strednik
             }else{
                 if(token->type==token_right_bracket){
                     //free(str);
