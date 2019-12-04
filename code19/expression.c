@@ -440,6 +440,22 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("MULS", NULL, NULL,NULL);
         break;
     case token_div:
+        if(operand1.type == token_val_int)  {
+            //převod na float
+        }
+        if(operand2.type == token_val_int){
+            //převod na float
+        }
+
+        if(operand1.type != token_val_float || operand2.type != token_val_float){
+            fprintf(stderr, "1. bad_type error type: %d\n", 4);
+            exit(4);
+        }
+        
+        if(S_Top(postfix_stack) == 0){
+            fprintf(stderr, "1. zero_division error type: %d\n", 9);
+            exit(9);
+        }
         push_list("JUMPIFEQ", str_num("$divs", div_count), "GF@$type1", "string@float");
         push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
         push_list("IDIVS", NULL, NULL,NULL);
@@ -451,6 +467,14 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         div_count++;
         break;
     case token_div_div:
+        if(operand1.type != token_val_int || operand2.type != token_val_int){
+            fprintf(stderr, "1. bad_type error type: %d\n", 4);
+            exit(4);
+        }
+        if(S_Top(postfix_stack) == 0){
+            fprintf(stderr, "1. zero_division error type: %d\n", 9);
+            exit(9);
+        }
         push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
         push_list("IDIVS", NULL, NULL,NULL);
         push_list("JUMP", str_num("$done", div_count), NULL, NULL);
@@ -523,7 +547,14 @@ void infix_postfix(char* act_func, char* id){
                 if(!stl_search(tabulka, token->val.c, act_func)){
                     get_next_token(f, token);
                     if(token->type == token_left_bracket){
-                        exit(2);
+                        get_next_token(f, token);
+                        if(token->type == token_right_bracket){
+                            fprintf(stderr, "1. undefined_function error type : %d\n", 3);
+                            exit(3);
+                        }   else    {
+                            fprintf(stderr, "1. bad_call error type : %d\n", 2);
+                            exit(2);
+                        }
                     }else{
                         
                         fprintf(stderr, "2. infix_postfix error type: %d\n", 3);
@@ -581,8 +612,8 @@ void infix_postfix(char* act_func, char* id){
 
     postfix_instruction(output_stack, act_func, logic);
     if(id!= NULL && logic){
-        fprintf(stderr, "5. infix_postfix error type: %d\n", 6);
-        exit(6);
+        fprintf(stderr, "5. infix_postfix error type: %d\n", 4);
+        exit(4);
         return;
     }
     if(id != NULL){

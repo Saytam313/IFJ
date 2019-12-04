@@ -89,8 +89,8 @@ bool DEF (){
 //    printf("token type je %d    %s\n", token->type, token->val.c);
     if(token->type == token_id){
         if(stl_find_func(tabulka, token->val.c)){
-            fprintf(stderr, "1 DEF error type: %d\n", 2);
-            exit(2);
+            fprintf(stderr, "1 DEF error type: %d\n", 3);
+            exit(3);
         }
         stl_push(&tabulka, token->val.c);
         current_function = token->val.c;
