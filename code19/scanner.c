@@ -60,6 +60,7 @@ bool tokenStringPridChar(string_t *st, char c) {
 
     if(st->length == st->max) {
         st->string = (char *)realloc(st->string, sizeof(char)*(st->max + 2));
+        val.string = st->string;
         st->max = st->max + 1;
     }
 
