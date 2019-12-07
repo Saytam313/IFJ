@@ -11,7 +11,7 @@
 
 #include "scanner.h"
 
-#define TOKEN_STRING_SIZE 1024
+#define TOKEN_STRING_SIZE 10
 #define BUFFER_SIZE 1024
 #define SUCCES 0
 #define LEX_ERR 1
@@ -59,8 +59,8 @@ bool tokenStringPridChar(string_t *st, char c) {
     assert(st->string);
 
     if(st->length == st->max) {
-        fprintf(stderr, "%s:%d\n", "ERROR", 99);
-        exit(99);
+        st->string = (char *)realloc(sizeof(char)*(st->max + 2));
+        st->max = st->max + 1;
     }
 
     st->string[st->length] = c;
