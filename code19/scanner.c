@@ -59,7 +59,7 @@ bool tokenStringPridChar(string_t *st, char c) {
     assert(st->string);
 
     if(st->length == st->max) {
-        st->string = (char *)realloc(sizeof(char)*(st->max + 2));
+        st->string = (char *)realloc(st->string, sizeof(char)*(st->max + 2));
         st->max = st->max + 1;
     }
 
