@@ -7,6 +7,9 @@
 char* current_function = "Main";
 char* current_variable;
 
+int in_if=0;//0- nothing | 1- if | 2- else
+char in_if_vars[100][100];
+int last_in_if_var=0;
 bool PROG();
 bool DEF ();
 bool STATEMENT();
@@ -15,6 +18,7 @@ bool NEXT_DEF_PARAM();
 bool DEF_PARAM_LIST();
 char* get_label_name(int n, char c);
 char* get_param_name();
+
 
 char* concat(char* str1, char* str2){
     char* vysledek = (char *)malloc(strlen(str1) + strlen(str2) + 1);
@@ -174,6 +178,12 @@ bool STATEMENT(){
         } else if(!stl_search(tabulka, current_variable, current_function)){
             get_next_token(f, token);
             if(token->type == token_equal){
+                if(in_if==1){
+                    //printf("%s\n",get_var_name(current_variable));
+                    //in_if_vars[last_in_if_var]=(char*) malloc(strlen(token->val.c));
+                    strcpy(in_if_vars[last_in_if_var],get_var_name(current_variable));
+                    last_in_if_var++;
+                }
                 stl_insert_to_top(tabulka, current_variable, current_function);
                 push_list ("DEFVAR", get_var_name(current_variable), NULL, NULL);
                 get_next_token(f, token);
@@ -188,9 +198,22 @@ bool STATEMENT(){
         }else {
 //            printf("ahoj\n");
 //          printf("jdu na exp\n");
+
             last_token = *token;
             get_next_token(f, token);
             if(token->type == token_equal){
+                if(in_if==2){
+                    for(int i=0;last_in_if_var>i;i++){
+                        if(strcmp(in_if_vars[i],get_var_name(current_variable))==0){
+                            push_list ("DEFVAR", get_var_name(current_variable), NULL, NULL);
+                            strcpy(in_if_vars[i],"");
+                        }
+
+                    }
+
+                }
+
+
                 get_next_token(f, token);
                 expression(current_function, current_variable);
             }else{
@@ -200,6 +223,7 @@ bool STATEMENT(){
         }
         return true;
     } else if(token->type == token_if){
+        in_if=1;
         get_next_token(f, token);
         if(token->type == token_colon || token->type == token_eol ){
             exit(2);
@@ -236,6 +260,7 @@ bool STATEMENT(){
                         if(last_token.type == token_dedent){
                             //get_next_token(f, token);
                             if(token->type == token_else){
+                                in_if=2;
                                 get_next_token(f, token);
                                 if(token->type == token_colon){
                                     get_next_token(f, token);
@@ -248,6 +273,11 @@ bool STATEMENT(){
                                                 S_Pop(label_Stack);
                                                 push_list("LABEL", endlabel, NULL, NULL);
                                                 if(last_token.type == token_dedent){
+                                                    in_if=0;
+                                                    for(int i=0;last_in_if_var>i;i++){
+                                                        strcpy(in_if_vars[i],"");
+                                                    }
+                                                    last_in_if_var=0;
                                                     return true;
                                                 }
                                         }
@@ -258,6 +288,11 @@ bool STATEMENT(){
                                 endlabel = S_Top(label_Stack);
                                 S_Pop(label_Stack);
                                 push_list("LABEL", endlabel, NULL, NULL);
+                                in_if=0;
+                                for(int i=0;last_in_if_var>i;i++){
+                                    strcpy(in_if_vars[i],"");
+                                }
+                                last_in_if_var=0;
                                 return true;    
                             }
                         }
