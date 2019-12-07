@@ -21,7 +21,7 @@
 
 
     bool stl_find_func(SymbolTable_t *table, char* name);
-    #define DEF_NODE_STACK_SIZE 20
+    #define DEF_NODE_STACK_SIZE 2000
 
     void stl_init(SymbolTable_t **table);
     void stl_push(SymbolTable_t **table, char * name);

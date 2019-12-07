@@ -8,7 +8,7 @@ char* current_function = "Main";
 char* current_variable;
 
 int in_if=0;//0- nothing | 1- if | 2- else
-char in_if_vars[100][100];
+char in_if_vars[100][1000];
 int last_in_if_var=0;
 bool PROG();
 bool DEF ();
@@ -28,7 +28,7 @@ char* concat(char* str1, char* str2){
 
 
 char* get_var_name(char* name){
-    char* vysledek = (char *)malloc(20);
+    char* vysledek = (char *)malloc(strlen("LF@")+strlen(name));
     sprintf(vysledek, "LF@%s", name);
     return vysledek;
 }

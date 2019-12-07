@@ -29,7 +29,7 @@ char precedence_table [13][13] = {
 char* get_float_name(float n);
 char* get_int_name(int n);
 char* get_name(Token_t tok){
-    char* vysledek = (char *)malloc(20);
+    char* vysledek = (char *)malloc(20000);
     switch(tok.type){
     case token_id:
         vysledek = get_var_name(tok.val.c);
@@ -50,11 +50,12 @@ char* get_name(Token_t tok){
     default:
         break;
     }
+    vysledek=realloc(vysledek,strlen(vysledek));
     return vysledek;
 }
 
 char* str_num(char* s, int d){
-    char* vysledek = (char *)malloc(20);
+    char* vysledek = (char *)malloc(strlen(s)+sizeof(int));
     sprintf(vysledek, "%s%d", s, d);
     return vysledek;
 }
