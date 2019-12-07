@@ -11,7 +11,7 @@
 
 #include "scanner.h"
 
-#define TOKEN_STRING_SIZE 10
+#define TOKEN_STRING_SIZE 1
 #define BUFFER_SIZE 1024
 #define SUCCES 0
 #define LEX_ERR 1
@@ -59,9 +59,11 @@ bool tokenStringPridChar(string_t *st, char c) {
     assert(st->string);
 
     if(st->length == st->max) {
-        st->string = (char *)realloc(st->string, sizeof(char)*(st->max + 2));
-        //val.string = st->string;
-        st->max = st->max + 1;
+        if(!(st->string = (char *)realloc(st->string, st->max + 2))) {
+            fprintf(stderr, "%s:%d\n", "ERROR", 99);
+            exit(99);
+        }
+        st->max += 1;
     }
 
     st->string[st->length] = c;
@@ -69,7 +71,6 @@ bool tokenStringPridChar(string_t *st, char c) {
     st->string[st->length] = '\0';
     return true;
 }
-
 
 //Pomocné proměnné
 static string_t val;            //Proměnná pro hodnotu
@@ -456,9 +457,9 @@ bool get_next_token(FILE *f, Token_t *token) {
                     } else {
                         //Pokud nejde o klíčové slovo uloží se id do tokenu
                         token->type = token_id;
+                        //Uložení řetězce
                         token->val.c = val.string;
 
-                        //Uvedení proměnné st do původního stavu
                         if(!tokenString(&val)) {
                             val.string = token->val.c;
                             token->val.c = NULL;
