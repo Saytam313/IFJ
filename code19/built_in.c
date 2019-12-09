@@ -199,7 +199,7 @@ void builtin_chr_generate(int state){
             push_list("LABEL","chr_iGEQ0",NULL,NULL);
             push_list("GT","LF@cmpres","LF@i","int@255");
             push_list("JUMPIFNEQ","chr_igood","bool@true","lf@cmpres");
-            push_list("EXIT","int@1",NULL,NULL);
+            push_list("EXIT","int@4",NULL,NULL);
             push_list("LABEL","chr_igood",NULL,NULL);
             push_list("INT2CHAR","LF@retval","lf@i",NULL);
             push_list("POPFRAME",NULL,NULL,NULL);

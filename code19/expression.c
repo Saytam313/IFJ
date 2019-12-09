@@ -236,23 +236,29 @@ void user_f(char* act_func, char* id){
             exit(2);
             return;
         }
-//        printf("pred carka\n");
         get_next_token(f, token);
-//        printf("token type %d\n", token->type);
         if(token->type != token_comma){
             i++;
             break;
         }
-//        printf("carka\n");
         get_next_token(f, token);
         i++;
     }
-//    printf("konec while\n");
+
     if(parenth){
         if(token->type == token_right_bracket){
+            //if(stl_number_of_par(tabulka, func) > 0){
+            //    fprintf(stderr, "1. rand_error (badcall4) %d\n", 5);
+            //    exit(5);
+            //}   else    {
             get_next_token(f, token);
-        } else {
-            fprintf(stderr, "%d\n", 2);
+            //}
+        } else if(token->type == token_val_int && count_of_params == 0)  {
+            fprintf(stderr, "1. rand_error (badcall4) %d\n", 5);
+            exit(5);
+            return;
+        }   else {
+            fprintf(stderr, "2. rand_error %d\n", 2);
             exit(2);
             return;
         }
@@ -263,8 +269,8 @@ void user_f(char* act_func, char* id){
         return;
     }
     if(token->type != token_eol){
-        fprintf(stderr, "%d\n", 2);
-        exit(2);
+        fprintf(stderr, "3. rand_error %d\n", 3);
+        exit(3);
         return;
     }
     push_list("CALL", func, NULL, NULL);
@@ -451,16 +457,6 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("MULS", NULL, NULL,NULL);
         break;
     case token_div:
-
-        //if(operand1.type != token_val_float || operand2.type != token_val_float){
-        //    fprintf(stderr, "1. bad_type error type: %d\n", 4);
-        //    exit(4);
-        //}
-        
-        //if(S_Top(postfix_stack) == 0){
-        //    fprintf(stderr, "1. zero_division error type: %d\n", 9);
-        //    exit(9);
-        //}
         push_list("POPS", get_name(operand1), NULL, NULL);
         push_list("JUMPIFEQ", str_num("$divs", div_count), "GF@$type2", "string@float");
         push_list("JUMPIFEQ", "$error9", get_name(operand1), "int@0");

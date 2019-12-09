@@ -1,15 +1,12 @@
-factorial2.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [0]. - rekurzivni volani funkce
-factorial2.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [0]. - rekurzivni volani funkce
+buildin.py_code4
+buildin.py_code5
 badindent.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [1, 2]. - tezko rict proc by tohle mela byt chyba, asi bude potreba se podivat do zadani
 badreturn.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [2]. - tohle mi prijde taky jako spravne, takze asi zase se podivat do zadani
-badvar3.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [3]. - spatnej exit code, jestli to spravne chapu tak je chyba v tom ze nesmi byt global promenna jako vlastni funkce, python to prebere ale nas projekt asi ne, je potreba se podivat co pisou v zadani, mozna chyba v testech.
-badcall4.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [5]. - spatnej exit code, davani parametru funkci ktera je nema mit
 badcall5.py - Unexpected exit code of IFJ compiler. Actual: 3 Expected: [5]. - spatnej exit code, spousteni funkce bez parametru
-zerodiv.py - Unexpected exit code of IFJ interpreter. Actual: 53 Expected: [57, 9]. - spatnej exit, děleni nulou
-zerodiv2.py - Unexpected exit code of IFJ compiler. Actual: 4 Expected: [0, 9]. - viz zerodiv.py akorát celočíselné dělní, čekáme na Tankotu s převody mezi float a int
-badbuildin.py - Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [53, 4]. - asi chybí check jestli je ve funkci len() parametr string
-badbuildin7.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4]. - spatnej pocet parametru
-badbuildin8.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4, 6]. - spatnej pocet parametru
+badtype4
+badtype5
+badbuildin.py - Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [53, 4]. - kontrola None v argumentu
+badbuildin8.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4, 6]. - házi bez chyby, třeba nějak ošetřit delší vstup jak 255
 longidentif.py - Unexpected exit code of IFJ compiler. Actual: 99 Expected: [0]. - predpokladam ze je nekde alokovany malo mista na delku jmena promenne
 geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - hardcore kod, ten jsem moc necheckoval v cem je chyba
 geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - hardcore kod, ten jsem moc necheckoval v cem je chyba

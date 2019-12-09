@@ -226,6 +226,7 @@ bool STATEMENT(){
         in_if=1;
         get_next_token(f, token);
         if(token->type == token_colon || token->type == token_eol ){
+            fprintf(stderr, "error 2 %d\n", 2);
             exit(2);
         }
         expression(current_function, NULL);
@@ -347,8 +348,21 @@ bool STATEMENT(){
 
 
         }
-
-
+    }
+    else if(token->type == token_chr)   {
+        get_next_token(f, token);
+        if(token->type == token_left_bracket)
+            get_next_token(f, token);
+            if(token->type != token_val_int){
+                fprintf(stderr, "2 runtime_error: %d\n", 4);
+                exit(4);
+            }else{
+                get_next_token(f,token);
+                if(token->type == token_right_bracket){
+                    get_next_token(f,token);
+                    return true;
+                }
+            }
     }
     fprintf(stderr, "2 STATEMENT error type: %d\n", 2);
     exit(2);

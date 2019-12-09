@@ -1,0 +1,548 @@
+
+********************
+TEST 1: factorial.py
+********************
+
+PROGRAM INPUT:
+5
+----
+SUCCESS
+
+********************
+TEST 2: factorial.py
+********************
+
+PROGRAM INPUT:
+2
+----
+SUCCESS
+
+********************
+TEST 3: factorial2.py
+********************
+
+PROGRAM INPUT:
+5
+----
+SUCCESS
+
+********************
+TEST 4: factorial2.py
+********************
+
+PROGRAM INPUT:
+2
+----
+SUCCESS
+
+********************
+TEST 5: buildin.py
+********************
+
+PROGRAM INPUT:
+abcedfgh
+abcdefgh
+----
+Compiler error output:
+ifj19: malloc.c:2868: mremap_chunk: Assertion `((size + offset) & (GLRO (dl_pagesize) - 1)) == 0' failed.
+
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: -6 Expected: [0].
+
+********************
+TEST 6: buildin.py
+********************
+
+PROGRAM INPUT:
+abcdefgh
+----
+Compiler error output:
+ifj19: malloc.c:2868: mremap_chunk: Assertion `((size + offset) & (GLRO (dl_pagesize) - 1)) == 0' failed.
+
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: -6 Expected: [0].
+
+********************
+TEST 7: factorial.py
+********************
+
+PROGRAM INPUT:
+a
+----
+SUCCESS
+
+********************
+TEST 8: factorial.py
+********************
+
+SUCCESS
+
+********************
+TEST 9: factorial2.py
+********************
+
+PROGRAM INPUT:
+a
+----
+SUCCESS
+
+********************
+TEST 10: factorial2.py
+********************
+
+SUCCESS
+
+********************
+TEST 11: badcomment.py
+********************
+
+SUCCESS
+
+********************
+TEST 12: baddot.py
+********************
+
+SUCCESS
+
+********************
+TEST 13: badchars.py
+********************
+
+SUCCESS
+
+********************
+TEST 14: badcomment2.py
+********************
+
+SUCCESS
+
+********************
+TEST 15: badexponent.py
+********************
+
+SUCCESS
+
+********************
+TEST 16: badindent2.py
+********************
+
+SUCCESS
+
+********************
+TEST 17: badstring.py
+********************
+
+SUCCESS
+
+********************
+TEST 18: emptyexponent.py
+********************
+
+SUCCESS
+
+********************
+TEST 19: morezeroes.py
+********************
+
+SUCCESS
+
+********************
+TEST 20: nonasci.py
+********************
+
+SUCCESS
+
+********************
+TEST 21: badfunction5.py
+********************
+
+SUCCESS
+
+********************
+TEST 22: badindent.py
+********************
+
+Compiler error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: 0 Expected: [1, 2].
+
+********************
+TEST 23: badfunction.py
+********************
+
+SUCCESS
+
+********************
+TEST 24: badfunction2.py
+********************
+
+SUCCESS
+
+********************
+TEST 25: badfunction3.py
+********************
+
+SUCCESS
+
+********************
+TEST 26: badfunction4.py
+********************
+
+SUCCESS
+
+********************
+TEST 27: badfunction7.py
+********************
+
+SUCCESS
+
+********************
+TEST 28: badindent3.py
+********************
+
+SUCCESS
+
+********************
+TEST 29: badwhile.py
+********************
+
+SUCCESS
+
+********************
+TEST 30: badwhile2.py
+********************
+
+SUCCESS
+
+********************
+TEST 31: badwhile3.py
+********************
+
+SUCCESS
+
+********************
+TEST 32: badif.py
+********************
+
+SUCCESS
+
+********************
+TEST 33: badif2.py
+********************
+
+SUCCESS
+
+********************
+TEST 34: badif3.py
+********************
+
+SUCCESS
+
+********************
+TEST 35: badcall.py
+********************
+
+SUCCESS
+
+********************
+TEST 36: badcall2.py
+********************
+
+SUCCESS
+
+********************
+TEST 37: badcall3.py
+********************
+
+SUCCESS
+
+********************
+TEST 38: badexpr.py
+********************
+
+SUCCESS
+
+********************
+TEST 39: badexpr2.py
+********************
+
+SUCCESS
+
+********************
+TEST 40: badexpr3.py
+********************
+
+SUCCESS
+
+********************
+TEST 41: badexpr4.py
+********************
+
+SUCCESS
+
+********************
+TEST 42: badexpr5.py
+********************
+
+SUCCESS
+
+********************
+TEST 43: badreturn.py
+********************
+
+Compiler error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: 0 Expected: [2].
+
+********************
+TEST 44: badvar3.py
+********************
+
+SUCCESS
+
+********************
+TEST 45: badfunction8.py
+********************
+
+SUCCESS
+
+********************
+TEST 46: badfunction9.py
+********************
+
+SUCCESS
+
+********************
+TEST 47: badfunction10.py
+********************
+
+SUCCESS
+
+********************
+TEST 48: badcall4.py
+********************
+
+SUCCESS
+
+********************
+TEST 49: badcall5.py
+********************
+
+Compiler error output:
+2. user_f error type: 3
+
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: 3 Expected: [5].
+
+********************
+TEST 50: badfunction6.py
+********************
+
+SUCCESS
+
+********************
+TEST 51: badtype.py
+********************
+
+SUCCESS
+
+********************
+TEST 52: badtype2.py
+********************
+
+SUCCESS
+
+********************
+TEST 53: badtype3.py
+********************
+
+SUCCESS
+
+********************
+TEST 54: badtype4.py
+********************
+
+Interpret error output:
+19.6-15: syntax error, unexpected vSTRING, expecting sLF or sGF or sTF
+
+----
+ERROR: Unexpected exit code of IFJ interpreter. Actual: 51 Expected: [53, 4].
+
+********************
+TEST 55: badtype5.py
+********************
+
+Interpret error output:
+19.6-15: syntax error, unexpected vSTRING, expecting sLF or sGF or sTF
+
+----
+ERROR: Unexpected exit code of IFJ interpreter. Actual: 51 Expected: [53, 4].
+
+********************
+TEST 56: badtype6.py
+********************
+
+SUCCESS
+
+********************
+TEST 57: badtype7.py
+********************
+
+SUCCESS
+
+********************
+TEST 58: badtype8.py
+********************
+
+SUCCESS
+
+********************
+TEST 59: badtype9.py
+********************
+
+SUCCESS
+
+********************
+TEST 60: zerodiv.py
+********************
+
+SUCCESS
+
+********************
+TEST 61: zerodiv2.py
+********************
+
+SUCCESS
+
+********************
+TEST 62: badbuildin.py
+********************
+
+Interpret error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [53, 4].
+
+********************
+TEST 63: badbuildin2.py
+********************
+
+SUCCESS
+
+********************
+TEST 64: badbuildin3.py
+********************
+
+SUCCESS
+
+********************
+TEST 65: badbuildin6.py
+********************
+
+SUCCESS
+
+********************
+TEST 66: badbuildin7.py
+********************
+
+SUCCESS
+
+********************
+TEST 67: badbuildin4.py
+********************
+
+SUCCESS
+
+********************
+TEST 68: badbuildin5.py
+********************
+
+SUCCESS
+
+********************
+TEST 69: badbuildin8.py
+********************
+
+Interpret error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [58, 6, 4].
+
+********************
+TEST 70: emptyprogram.py
+********************
+
+SUCCESS
+
+********************
+TEST 71: specstring.py
+********************
+
+SUCCESS
+
+********************
+TEST 72: lotofparams.py
+********************
+
+SUCCESS
+
+********************
+TEST 73: longidentif.py
+********************
+
+SUCCESS
+
+********************
+TEST 74: geometry.py
+********************
+
+PROGRAM INPUT:
+abc
+
+----
+Compiler error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: -11 Expected: [0].
+
+********************
+TEST 75: geometry.py
+********************
+
+PROGRAM INPUT:
+square
+5
+rectangle
+5.4
+10.4
+
+
+----
+Compiler error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: -11 Expected: [0].
+
+********************
+TEST 76: geometry.py
+********************
+
+PROGRAM INPUT:
+circle
+4.7
+triangle
+1.1
+2.2
+2.2
+2.8
+square
+0
+
+
+----
+Compiler error output:
+<empty>
+----
+ERROR: Unexpected exit code of IFJ compiler. Actual: -11 Expected: [0].
