@@ -163,10 +163,9 @@ bool STATEMENT_LIST(){
 }
 
 bool STATEMENT(){
-//    printf("start STATEMENT\n");
     if(token->type == token_eol || token->type == token_pass){
         return true;
-    } else if(token->type >= token_inputs && token->type <= token_substr){
+    } else if(((token->type >= token_inputs) && (token->type <= token_substr)) || token->type == token_chr){
         expression(current_function, NULL);
         return true;
     } else if(token->type == token_id){
@@ -348,21 +347,6 @@ bool STATEMENT(){
 
 
         }
-    }
-    else if(token->type == token_chr)   {
-        get_next_token(f, token);
-        if(token->type == token_left_bracket)
-            get_next_token(f, token);
-            if(token->type != token_val_int){
-                fprintf(stderr, "2 runtime_error: %d\n", 4);
-                exit(4);
-            }else{
-                get_next_token(f,token);
-                if(token->type == token_right_bracket){
-                    get_next_token(f,token);
-                    return true;
-                }
-            }
     }
     fprintf(stderr, "2 STATEMENT error type: %d\n", 2);
     exit(2);

@@ -1,13 +1,5 @@
-buildin.py_code4
-buildin.py_code5
-badindent.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [1, 2]. - tezko rict proc by tohle mela byt chyba, asi bude potreba se podivat do zadani
-badreturn.py - Unexpected exit code of IFJ compiler. Actual: 0 Expected: [2]. - tohle mi prijde taky jako spravne, takze asi zase se podivat do zadani
-badcall5.py - Unexpected exit code of IFJ compiler. Actual: 3 Expected: [5]. - spatnej exit code, spousteni funkce bez parametru
-badtype4
-badtype5
-badbuildin.py - Unexpected exit code of IFJ interpreter. Actual: 0 Expected: [53, 4]. - kontrola None v argumentu
-badbuildin8.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0, 4, 6]. - házi bez chyby, třeba nějak ošetřit delší vstup jak 255
-longidentif.py - Unexpected exit code of IFJ compiler. Actual: 99 Expected: [0]. - predpokladam ze je nekde alokovany malo mista na delku jmena promenne
-geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - hardcore kod, ten jsem moc necheckoval v cem je chyba
-geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - hardcore kod, ten jsem moc necheckoval v cem je chyba
-geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - hardcore kod, ten jsem moc necheckoval v cem je chyba
+buildin.py_code4 - špatný realloc ale jen na Win afaik - test na merlinu
+buildin.py_code5 - -||-
+geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - 
+geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - segfault - check na merlinu
+geometry.py - Unexpected exit code of IFJ compiler. Actual: 2 Expected: [0]. - 

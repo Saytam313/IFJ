@@ -127,10 +127,14 @@ void builtin_length(char* id, char* act_func){
     if(token->type == token_left_bracket){
         get_next_token(f,token);
     }else{
-        fprintf(stderr, "2 builtin_length error type: %d", 2);
+        fprintf(stderr, "2 builtin_length error type: %d\n", 2);
         exit(2);
     }
     char str[100];
+    if(token->type == token_nil) {
+        fprintf(stderr, "3 builtin_length error type: %d\n", 4);
+        exit(4);
+    }
     if(token->type == token_id || token->type == token_string){
         if(token->type == token_string){
             sprintf(str,"LF@%s", id);
@@ -213,12 +217,16 @@ void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
     if(token->type==token_left_bracket){
         get_next_token(f,token);
     }else{   
-        fprintf(stderr,"left_bracket_missing error 2\n");//syntax error
+        fprintf(stderr,"left_bracket_missing error %d\n", 2);//syntax error
         exit(2);
     }
 
     if(token->type!=token_val_int && token->type!=token_id){
         fprintf(stderr,"%d\n",4);//spatna promena
+        exit(4);
+    }
+    if(token->val.c > 255)  {
+        fprintf(stderr, "num_outofbounds error %d\n", 4);
         exit(4);
     }
     char* param_string=malloc(sizeof(char)*10);
