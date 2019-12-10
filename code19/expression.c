@@ -45,7 +45,7 @@ char* get_name(Token_t tok){
         vysledek = concat("string@", tok.val.c);
         break;
     case token_nil:
-        vysledek = "nil@nil";
+        strcpy(vysledek,"nil@nil");
         break;
     default:
         break;
@@ -390,29 +390,38 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
     push_list("JUMPIFEQ", "$error4", "GF@$type2", "string@string");
 
     //if(operand1.type == token_val_int || operand2.type == token_val_int){
+    Token_t old_operand;
     if(operand1.type != operand2.type && operand1.type != token_string && operand2.type != token_string){
         
         push_list("DEFVAR", str_num("LF@$floattmp", tmp_count), NULL, NULL);
         
-        Token_t old_operand;
         if(operand1.type == token_val_int){
             old_operand = operand1;
+            
+            //push_list("INT2FLOAT", get_name(operand1), get_name(old_operand), NULL);
+            //push_list("PUSHS", get_name(operand1),NULL, NULL);
+            //push_list("PUSHS", get_name(operand1),NULL, NULL);
+            push_list("INT2FLOATS", NULL, NULL, NULL);
+            push_list("MOVE","GF@$type1","string@float",NULL);
             operand1.val.c = str_num("$floattmp", tmp_count);
             operand1.type = token_id;
+            push_list("POPS", get_name(operand1),NULL, NULL);
+            push_list("PUSHS", get_name(operand1),NULL, NULL);
             //push_list("POPS", get_name(operand1),NULL, NULL);
-            //push_list("INT2FLOAT", get_name(operand1), get_name(old_operand), NULL);
-            push_list("INT2FLOATS", NULL, NULL, NULL);
-            //push_list("PUSHS", get_name(operand1), NULL, NULL);
+            //push_list("POPS", get_name(operand1),NULL, NULL);
         
         }else{
             old_operand = operand2;
+
+            //push_list("INT2FLOAT", get_name(operand2), get_name(old_operand), NULL);
+            push_list("POPS", "GF@$result",NULL, NULL);
+            push_list("INT2FLOATS", NULL, NULL, NULL);
+            push_list("MOVE","GF@$type2","string@float",NULL);
+            push_list("PUSHS", "GF@$result",NULL, NULL);
             operand2.val.c = str_num("$floattmp", tmp_count);
             operand2.type = token_id;
 
-            push_list("POPS", get_name(operand2),NULL, NULL);
-            //push_list("INT2FLOAT", get_name(operand2), get_name(old_operand), NULL);
-            push_list("INT2FLOATS", NULL, NULL, NULL);
-            push_list("PUSHS", get_name(operand2),NULL, NULL);
+
         }
         tmp_count++;
     } //else {
@@ -459,25 +468,25 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("MULS", NULL, NULL,NULL);
         break;
     case token_div:
-        if(act_token.type == token_nic){
-            fprintf(stderr, "1. zero_division error type: %d\n", 9);
-            exit(9);
-        }
-        if(operand1.type != (token_val_int || token_val_float) || operand2.type != (token_val_int || token_val_float)){
-            fprintf(stderr, "1. bad_type error type: %d\n", 4);
-            exit(4);
-        }
-        push_list("POPS", get_name(operand1), NULL, NULL);
+        //if(operand1.type != (token_val_int || token_val_float ) || operand2.type != (token_val_int || token_val_float )){
+        //    fprintf(stderr, "1. bad_type error type: %d\n", 4);
+        //    exit(4);
+        //}
+        //if(act_token.type == token_nic){
+        //    fprintf(stderr, "1. zero_division error type: %d\n", 9);
+        //    exit(9);
+        //}
+        //push_list("POPS", get_name(operand1), NULL, NULL);
         push_list("JUMPIFEQ", str_num("$divs", div_count), "GF@$type2", "string@float");
         push_list("JUMPIFEQ", "$error9", get_name(operand1), "int@0");
 
-        push_list("PUSHS", get_name(operand1), NULL, NULL);
+       // push_list("PUSHS", get_name(operand1), NULL, NULL);
         push_list("IDIVS", NULL, NULL,NULL);
         push_list("JUMP", str_num("$done", div_count), NULL, NULL);
         push_list("LABEL", str_num("$divs", div_count), NULL, NULL);
 
         push_list("JUMPIFEQ", "$error9", get_name(operand1), "float@0x0.000000p+0");
-        push_list("PUSHS", get_name(operand1), NULL, NULL);
+        //push_list("PUSHS", get_name(operand1), NULL, NULL);
         push_list("DIVS", NULL, NULL,NULL);
         push_list("LABEL", str_num("$done", div_count), NULL,NULL);
         div_count++;
@@ -487,10 +496,10 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
             fprintf(stderr, "2. bad_type error type: %d\n", 4);
             exit(4);
         }
-        if(S_Top(postfix_stack) == 0){
-            fprintf(stderr, "1. zero_division error type: %d\n", 9);
-            exit(9);
-        }
+        //if(S_Top(postfix_stack) == 0){
+        //    fprintf(stderr, "1. zero_division error type: %d\n", 9);
+        //    exit(9);
+        //}
         push_list("JUMPIFEQ", "$error9", get_name(operand2), "int@0");
         push_list("IDIVS", NULL, NULL,NULL);
         push_list("JUMP", str_num("$done", div_count), NULL, NULL);
@@ -503,6 +512,7 @@ void postfix_instruction(stack_t* postfix_stack, char* act_func, bool logic){
         push_list("NOTS", NULL, NULL,NULL);
         break;
     case token_less:
+
         push_list("LTS", NULL, NULL,NULL);
         break;
     case token_great_equal:
@@ -551,6 +561,9 @@ void infix_postfix(char* act_func, char* id){
                 sum_count--;
                 S_Push_Token(output_stack, tmp);
             }
+        }else{
+            fprintf(stderr,"565: infix_postfix err type 2\n");
+            exit(2);
         }
 
 

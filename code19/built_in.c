@@ -108,17 +108,29 @@ void builtin_print(char* act_f){
 
 void builtin_inputi(char* res_var){
     char str[100];
-    sprintf(str,"LF@%s",res_var);
+    if(res_var==NULL){
+        strcpy(str,"GF@$result");
+    }else{
+        sprintf(str,"LF@%s",res_var);
+    }
     push_list("READ", strdup(str), "int", NULL);
 }
 void builtin_inputf(char* res_var){
     char str[100];
-    sprintf(str,"LF@%s",res_var);
+    if(res_var==NULL){
+        strcpy(str,"GF@$result");
+    }else{
+        sprintf(str,"LF@%s",res_var);
+    }
     push_list("READ", strdup(str), "float", NULL);
 }
 void builtin_inputs(char* res_var){
     char str[100];
-    sprintf(str,"LF@%s",res_var);
+    if(res_var==NULL){
+        strcpy(str,"GF@$result");
+    }else{
+        sprintf(str,"LF@%s",res_var);
+    }
     push_list("READ",strdup(str),"string",NULL);
 }
 
@@ -137,7 +149,11 @@ void builtin_length(char* id, char* act_func){
     }
     if(token->type == token_id || token->type == token_string){
         if(token->type == token_string){
-            sprintf(str,"LF@%s", id);
+            //if(id==NULL){
+            //    strcpy(str,"GF@$result");
+            //}else{
+                sprintf(str,"LF@%s", id);
+            //}
             //fprintf(stderr,"string:%s\n",str);
             //str=strdup(str);
             push_list("STRLEN", strdup(str), concat("string@", token->val.c), NULL);
@@ -225,24 +241,30 @@ void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
-    if(token->val.c > 255)  {
-        fprintf(stderr, "num_outofbounds error %d\n", 4);
-        exit(4);
-    }
-    char* param_string=malloc(sizeof(char)*10);
+    char* param_string=malloc(sizeof(char)*100);
     if(token->type==token_val_int){
         sprintf(param_string,"int@%d",token->val.i);
     }else if(token->type==token_id){
         sprintf(param_string,"LF@%s",token->val.c);
     }
 
-    char* res_var_frame=malloc(sizeof(char)*strlen(res_var)+3);
-    sprintf(res_var_frame,"LF@%s",res_var);
+
+    char* res_var_frame=malloc(3);
+    if(res_var==NULL){
+        res_var_frame=realloc(res_var_frame,sizeof(char)*strlen("GF@$result"));
+        strcpy(res_var_frame,"GF@$result");
+        //strcpy(res_var," ");
+    }else{
+        res_var_frame=realloc(res_var_frame,sizeof(char)*strlen(res_var)+3);
+        sprintf(res_var_frame,"LF@%s",res_var);
+    }
 
     if(stl_search(fce_list,res_var,actual_fce)==false){
         //create var
-        stl_insert_to_top(tabulka,res_var,actual_fce);
-        push_list("DEFVAR",res_var_frame,NULL,NULL);
+        if(strcmp(res_var_frame,"GF@$result")!=0){
+            stl_insert_to_top(tabulka,res_var,actual_fce);
+            push_list("DEFVAR",res_var_frame,NULL,NULL);
+        }
 
     }
     push_list("CREATEFRAME",NULL,NULL,NULL);
@@ -322,7 +344,6 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
-
     char* param1_string=malloc(sizeof(char)*strlen(token->val.c));
     if(token->type==token_string){
         sprintf(param1_string,"string@%s",token->val.c);
@@ -349,14 +370,22 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     }
 
 
-    char* res_var_frame=malloc(sizeof(char)*strlen(res_var)+3);
-    sprintf(res_var_frame,"LF@%s",res_var);
+    char* res_var_frame=malloc(3);
+    if(res_var==NULL){
+        res_var_frame=realloc(res_var_frame,sizeof(char)*strlen("GF@$result"));
+        strcpy(res_var_frame,"GF@$result");
+        //strcpy(res_var," ");
+    }else{
+        res_var_frame=realloc(res_var_frame,sizeof(char)*strlen(res_var)+3);
+        sprintf(res_var_frame,"LF@%s",res_var);
+    }
 
     if(stl_search(f_list,res_var,actual_fce)==false){
         //create var
-        stl_insert_to_top(f_list,res_var,actual_fce);
-        push_list("DEFVAR",res_var_frame,NULL,NULL);
-
+        if(strcmp(res_var_frame,"GF@$result")!=0){
+            stl_insert_to_top(f_list,res_var,actual_fce);
+            push_list("DEFVAR",res_var_frame,NULL,NULL);
+        }
     }
     push_list("CREATEFRAME",NULL,NULL,NULL);
     push_list("PUSHS",param1_string,NULL,NULL);
@@ -513,14 +542,22 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
         sprintf(param3_string,"LF@%s",token->val.c);
     }
 
-    char* res_var_frame=malloc(sizeof(char)*(strlen(res_var)+3));
-    sprintf(res_var_frame,"LF@%s",res_var);
+    char* res_var_frame=malloc(3);
+    if(res_var==NULL){
+        res_var_frame=realloc(res_var_frame,strlen("GF@$result"));
+        //strcpy(res_var,"GF@$result");
+    }else{
+        res_var_frame=realloc(res_var_frame,strlen(res_var)+3);
+        sprintf(res_var_frame,"LF@%s",res_var);
+        
+    }
     //printf("resvar: %s\n",res_var_frame);
     if(stl_search(f_list,res_var,actual_fce)==false){
         //create var
-        stl_insert_to_top(f_list,res_var,actual_fce);
-        push_list("DEFVAR",res_var_frame,NULL,NULL);
-
+        if(strcmp(res_var_frame,"GF@$result")!=0){
+            stl_insert_to_top(f_list,res_var,actual_fce);
+            push_list("DEFVAR",res_var_frame,NULL,NULL);
+        }
     }
     push_list("CREATEFRAME",NULL,NULL,NULL);
     push_list("PUSHS",param1_string,NULL,NULL);
