@@ -163,6 +163,7 @@ bool STATEMENT_LIST(){
 }
 
 bool STATEMENT(){
+    bool zavorky=false;
     if(token->type == token_eol || token->type == token_pass){
         return true;
     } else if(((token->type >= token_inputs) && (token->type <= token_substr)) || token->type == token_chr){
@@ -223,7 +224,7 @@ bool STATEMENT(){
         return true;
     } else if(token->type == token_if){
         in_if=1;
-        bool zavorky=false;
+        zavorky=false;
         get_next_token(f, token);
         if(token->type == token_colon || token->type == token_eol ){
             fprintf(stderr, "error 2 %d\n", 2);
@@ -315,8 +316,13 @@ bool STATEMENT(){
 
     } else if(token->type == token_while){
         get_next_token(f, token);
+        zavorky=false;
         static int whilecounter = 0;
         whilecounter++;
+        if(token->type == token_left_bracket){
+            zavorky=true;
+            get_next_token(f, token);
+        }
         char * whilelabel = get_label_name(whilecounter, 'w');
         push_list("LABEL", whilelabel, NULL, NULL);
         char * whilendlabel = get_label_name(whilecounter, 'e');
@@ -326,6 +332,16 @@ bool STATEMENT(){
         push_list ("POPS", "GF@$result", NULL, NULL);
         push_list("NOT", "GF@$result", "GF@$result", NULL);
         push_list("JUMPIFEQ", whilendlabel , "GF@$result", "bool@true");
+        
+        if(zavorky==true && token->type != token_right_bracket){
+            fprintf(stderr, "if bracket missing error 2\n");
+            exit(2);
+        }else if(zavorky==true){
+            get_next_token(f, token);
+            zavorky=false;
+        }
+
+
         if(token->type == token_colon){
             get_next_token(f, token);
             if(token->type == token_eol){
