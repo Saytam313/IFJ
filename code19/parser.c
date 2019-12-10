@@ -223,10 +223,15 @@ bool STATEMENT(){
         return true;
     } else if(token->type == token_if){
         in_if=1;
+        bool zavorky=false;
         get_next_token(f, token);
         if(token->type == token_colon || token->type == token_eol ){
             fprintf(stderr, "error 2 %d\n", 2);
             exit(2);
+        }
+        if(token->type == token_left_bracket){
+            zavorky=true;
+            get_next_token(f, token);
         }
         expression(current_function, NULL);
         static int ifcounter = 0;
@@ -238,6 +243,13 @@ bool STATEMENT(){
         push_list ("POPS", "GF@$result", NULL, NULL);
         push_list("NOT", "GF@$result", "GF@$result", NULL);
         push_list("JUMPIFEQ", elselabel , "GF@$result", "bool@true");
+        if(zavorky==true && token->type != token_right_bracket){
+            fprintf(stderr, "if bracket missing error 2\n");
+            exit(2);
+        }else if(zavorky==true){
+            get_next_token(f, token);
+            zavorky=false;
+        }
 
         if(token->type == token_colon){
             get_next_token(f, token);

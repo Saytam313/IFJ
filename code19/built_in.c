@@ -210,6 +210,12 @@ void builtin_chr_generate(int state){
             push_list("POPS","LF@i",NULL,NULL);
             push_list("DEFVAR","LF@var_type",NULL,NULL);
             push_list("TYPE","LF@var_type","LF@i",NULL);
+
+            push_list("JUMPIFNEQ","chr_inenifloat","LF@var_type","string@float");
+            push_list("FLOAT2INT","LF@i","LF@i",NULL);
+            push_list("TYPE","LF@var_type","LF@i",NULL);
+            push_list("LABEL","chr_inenifloat",NULL,NULL);
+            
             push_list("JUMPIFEQ","chr_ijeint","LF@var_type","string@int");
             push_list("EXIT","int@4",NULL,NULL);
             push_list("LABEL","chr_ijeint",NULL,NULL);
@@ -237,13 +243,15 @@ void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
         exit(2);
     }
 
-    if(token->type!=token_val_int && token->type!=token_id){
+    if(token->type!=token_val_int && token->type!=token_id && token->type!=token_val_float){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
     char* param_string=malloc(sizeof(char)*100);
     if(token->type==token_val_int){
         sprintf(param_string,"int@%d",token->val.i);
+    }else if(token->type==token_val_float){
+        sprintf(param_string,"float@%a",token->val.d);
     }else if(token->type==token_id){
         sprintf(param_string,"LF@%s",token->val.c);
     }
@@ -301,6 +309,12 @@ void builtin_ord_generate(int state){
             push_list("POPS","LF@s",NULL,NULL);
             push_list("DEFVAR","LF@var_type",NULL,NULL);
             push_list("TYPE","LF@var_type","LF@i",NULL);
+            
+            push_list("JUMPIFNEQ","ord_prevodi_float","LF@var_type","string@float");
+            push_list("FLOAT2INT","LF@i","LF@i",NULL);
+            push_list("TYPE","LF@var_type","LF@i",NULL);
+            push_list("LABEL","ord_prevodi_float",NULL,NULL);
+            
             push_list("JUMPIFNEQ","ord_err","LF@var_type","string@int");
             push_list("TYPE","LF@var_type","LF@s",NULL);
             push_list("JUMPIFNEQ","ord_err","LF@var_type","string@string");
@@ -357,7 +371,7 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
         exit(1);
     }
     get_next_token(f,token);//2. parametr
-    if(token->type!=token_val_int && token->type!=token_id){
+    if(token->type!=token_val_int && token->type!=token_id && token->type!=token_val_float){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
@@ -365,6 +379,8 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     char* param2_string=malloc(sizeof(char)*100);
     if(token->type==token_val_int){
         sprintf(param2_string,"int@%d",token->val.i);
+    }else if(token->type==token_val_float){
+        sprintf(param2_string,"float@%a",token->val.d);
     }else if(token->type==token_id){
         sprintf(param2_string,"LF@%s",token->val.c);
     }
@@ -419,15 +435,28 @@ void builtin_substr_generate(int state){
             push_list("DEFVAR","LF@n",NULL,NULL);
             push_list("DEFVAR","LF@i",NULL,NULL);
             push_list("DEFVAR","LF@s",NULL,NULL);
+
+
+
             push_list("POPS","LF@n",NULL,NULL);
             push_list("POPS","LF@i",NULL,NULL);
             push_list("POPS","LF@s",NULL,NULL);
 
             push_list("DEFVAR","LF@var_type",NULL,NULL);
             push_list("TYPE","LF@var_type","LF@n",NULL);
+            push_list("JUMPIFNEQ","substr_prevodn_float","LF@var_type","string@float");
+            push_list("FLOAT2INT","LF@n","LF@n",NULL);
+            push_list("TYPE","LF@var_type","LF@n",NULL);
+            push_list("LABEL","substr_prevodn_float",NULL,NULL);
             push_list("JUMPIFNEQ","substr_err","LF@var_type","string@int");
+            
             push_list("TYPE","LF@var_type","LF@i",NULL);
+            push_list("JUMPIFNEQ","substr_prevodi_float","LF@var_type","string@float");
+            push_list("FLOAT2INT","LF@i","LF@i",NULL);
+            push_list("TYPE","LF@var_type","LF@i",NULL);
+            push_list("LABEL","substr_prevodi_float",NULL,NULL);
             push_list("JUMPIFNEQ","substr_err","LF@var_type","string@int");
+
             push_list("TYPE","LF@var_type","LF@s",NULL);
             push_list("JUMPIFNEQ","substr_err","LF@var_type","string@string");
 
@@ -512,14 +541,16 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     }
 
     get_next_token(f,token);//2. parametr
-    if(token->type!=token_val_int && token->type!=token_id){
+    if(token->type!=token_val_int && token->type!=token_id && token->type!=token_val_float){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
 
-    char* param2_string=malloc(sizeof(char)*100);
+    char* param2_string=malloc(200);
     if(token->type==token_val_int){
         sprintf(param2_string,"int@%d",token->val.i);
+    }else if(token->type==token_val_float){
+        sprintf(param2_string,"float@%a",token->val.d);
     }else if(token->type==token_id){
         sprintf(param2_string,"LF@%s",token->val.c);
     }
@@ -531,13 +562,15 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     }
     get_next_token(f,token);//3. parametr
 
-    if(token->type!=token_val_int && token->type!=token_id){
+    if(token->type!=token_val_int && token->type!=token_id && token->type!=token_val_float){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
     }
-    char* param3_string=malloc(sizeof(char)*100);
+    char* param3_string=malloc(200);
     if(token->type==token_val_int){
         sprintf(param3_string,"int@%d",token->val.i);
+    }else if(token->type==token_val_float){
+        sprintf(param3_string,"float@%a",token->val.d);
     }else if(token->type==token_id){
         sprintf(param3_string,"LF@%s",token->val.c);
     }
@@ -545,6 +578,7 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     char* res_var_frame=malloc(3);
     if(res_var==NULL){
         res_var_frame=realloc(res_var_frame,strlen("GF@$result"));
+        strcpy(res_var_frame,"GF@$result");
         //strcpy(res_var,"GF@$result");
     }else{
         res_var_frame=realloc(res_var_frame,strlen(res_var)+3);
