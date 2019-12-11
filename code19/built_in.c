@@ -3,7 +3,7 @@
 #include <math.h>
 #include "built_in.h"
 
-//uprava stringu pro print v IFJcode18
+//uprava stringu pro print v IFJcode19
 char* string_ready(char* string){
     int string_size = strlen(string);
     char* res_string=malloc(sizeof(string)*1000);
@@ -19,7 +19,7 @@ char* string_ready(char* string){
     free(tmp_string);
     return res_string;
 }
-
+//generuje kód pro funkci print
 void builtin_print(char* act_f){
         if(token->type == token_left_bracket){
             get_next_token(f,token);
@@ -81,11 +81,9 @@ void builtin_print(char* act_f){
 
             get_next_token(f,token);
             if(token->type==token_comma){
-                push_list("WRITE", "string@\\032",NULL,NULL);//toto nemazat, ma tu byt samostatnej strednik
+                push_list("WRITE", "string@\\032",NULL,NULL);
             }else{
                 if(token->type==token_right_bracket){
-                    //free(str);
-                    //free(print_string);
                     get_next_token(f, token);
                     if(token->type == token_eol || token->type == token_dedent){
                         break;
@@ -94,18 +92,16 @@ void builtin_print(char* act_f){
                         exit(2);
                     }
                 }else{
-                    //free(str);
-                    //free(print_string);
                     fprintf(stderr, "4 builtin_print error type: %d", 2);
                     exit(2);
-                    //error print nekonci zavorkou a mel by
+                    //error print nekonci zavorkou
                 }
             }
             get_next_token(f,token);
         }
         push_list("WRITE", "string@\\010",NULL,NULL);
 }
-
+//generuje kod pro vestavenou funkci inputi
 void builtin_inputi(char* res_var){
     char str[100];
     if(res_var==NULL){
@@ -115,6 +111,7 @@ void builtin_inputi(char* res_var){
     }
     push_list("READ", strdup(str), "int", NULL);
 }
+//generuje kod pro vestavenou funkci inputf
 void builtin_inputf(char* res_var){
     char str[100];
     if(res_var==NULL){
@@ -124,6 +121,7 @@ void builtin_inputf(char* res_var){
     }
     push_list("READ", strdup(str), "float", NULL);
 }
+//generuje kod pro vestavenou funkci inputs
 void builtin_inputs(char* res_var){
     char str[100];
     if(res_var==NULL){
@@ -133,9 +131,8 @@ void builtin_inputs(char* res_var){
     }
     push_list("READ",strdup(str),"string",NULL);
 }
-
+//generuje kod pro vestavenou funkci len
 void builtin_length(char* id, char* act_func){
-    //get_next_token(f, token);
     if(token->type == token_left_bracket){
         get_next_token(f,token);
     }else{
@@ -149,16 +146,8 @@ void builtin_length(char* id, char* act_func){
     }
     if(token->type == token_id || token->type == token_string){
         if(token->type == token_string){
-            //if(id==NULL){
-            //    strcpy(str,"GF@$result");
-            //}else{
-                sprintf(str,"LF@%s", id);
-            //}
-            //fprintf(stderr,"string:%s\n",str);
-            //str=strdup(str);
-            push_list("STRLEN", strdup(str), concat("string@", token->val.c), NULL);
-            //fprintf(stderr,"string:%s\n",str);
-            
+            sprintf(str,"LF@%s", id);
+            push_list("STRLEN", strdup(str), concat("string@", token->val.c), NULL);   
         } else {
             if(!stl_search(tabulka, token->val.c, act_func)){
                 fprintf(stderr, "1 builtin_length error type:%d\n", 3);
@@ -194,7 +183,7 @@ void builtin_length(char* id, char* act_func){
         exit(2);
     }
 }
-
+//generuje kod pro volani funkce chr
 void builtin_chr_generate(int state){
     static bool print=false;
     if(state==1){
@@ -233,16 +222,14 @@ void builtin_chr_generate(int state){
         }
     }
 }
-
+//generuje kod pro volani funkce chr
 void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
-    //get_next_token(f,token);
     if(token->type==token_left_bracket){
         get_next_token(f,token);
     }else{   
         fprintf(stderr,"left_bracket_missing error %d\n", 2);//syntax error
         exit(2);
     }
-
     if(token->type!=token_val_int && token->type!=token_id && token->type!=token_val_float){
         fprintf(stderr,"%d\n",4);//spatna promena
         exit(4);
@@ -256,12 +243,10 @@ void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
         sprintf(param_string,"LF@%s",token->val.c);
     }
 
-
     char* res_var_frame=malloc(3);
     if(res_var==NULL){
         res_var_frame=realloc(res_var_frame,sizeof(char)*strlen("GF@$result"));
         strcpy(res_var_frame,"GF@$result");
-        //strcpy(res_var," ");
     }else{
         res_var_frame=realloc(res_var_frame,sizeof(char)*strlen(res_var)+3);
         sprintf(res_var_frame,"LF@%s",res_var);
@@ -291,7 +276,7 @@ void builtin_chr_call(SymbolTable_t *fce_list,char* res_var,char* actual_fce){
     }
 
 }
-
+//generuje kod pro telo funkce ord
 void builtin_ord_generate(int state){
     static bool print=false;
     if(state==1){
@@ -343,9 +328,8 @@ void builtin_ord_generate(int state){
 
     }
 }
-
+//generuje kod pro volani funkce ord
 void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
-    //get_next_token(f,token);
     if(token->type==token_left_bracket){//parametry musi zacinat zavorkou
         get_next_token(f,token);//1.parametr
     }else{
@@ -390,7 +374,6 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     if(res_var==NULL){
         res_var_frame=realloc(res_var_frame,sizeof(char)*strlen("GF@$result"));
         strcpy(res_var_frame,"GF@$result");
-        //strcpy(res_var," ");
     }else{
         res_var_frame=realloc(res_var_frame,sizeof(char)*strlen(res_var)+3);
         sprintf(res_var_frame,"LF@%s",res_var);
@@ -418,7 +401,7 @@ void builtin_ord_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
         exit(2);
     }
 }
-
+//generuje kod tela funkce substr
 void builtin_substr_generate(int state){
     static bool print=false;
     if(state==1){
@@ -509,20 +492,14 @@ void builtin_substr_generate(int state){
         }
     }
 }
-
+//generuje kod pro volani funkce substr
 void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
-    //get_next_token(f,token);
     if(token->type == token_left_bracket){
         get_next_token(f,token);
     }else{
         fprintf(stderr,"left_bracket_missing Exit error 2\n");
         exit(2);
     }
-    //if(token->type != ){//parametry musi zacinat zavorkou
-    //    fprintf(stderr,"error type: %d\n", 2);//syntax error
-    //    exit(2);
-    //}
-    //get_next_token(f,token);//1.parametr (string)
     if(token->type!=token_string && token->type!=token_id){
         fprintf(stderr,"1 builtin_substr_call error type: %d\n",4);//spatna promena
         exit(4);
@@ -533,7 +510,6 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     }else if(token->type==token_id){
         sprintf(param1_string,"LF@%s",token->val.c);
     }
-
     get_next_token(f,token);//mela by to byt carka
     if(token->type!=token_comma){
         fprintf(stderr,"%d\n",1);//syntax error
@@ -579,13 +555,11 @@ void builtin_substr_call(SymbolTable_t *f_list,char* res_var,char* actual_fce){
     if(res_var==NULL){
         res_var_frame=realloc(res_var_frame,strlen("GF@$result"));
         strcpy(res_var_frame,"GF@$result");
-        //strcpy(res_var,"GF@$result");
     }else{
         res_var_frame=realloc(res_var_frame,strlen(res_var)+3);
         sprintf(res_var_frame,"LF@%s",res_var);
         
     }
-    //printf("resvar: %s\n",res_var_frame);
     if(stl_search(f_list,res_var,actual_fce)==false){
         //create var
         if(strcmp(res_var_frame,"GF@$result")!=0){

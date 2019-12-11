@@ -4,18 +4,16 @@
 #include <stdlib.h>
 #include "symtable.h"
 
-
-void stl_init(SymbolTable_t **table)
-{
+//initialize symbol table
+void stl_init(SymbolTable_t **table){
     *table = (SymbolTable_t *) malloc(sizeof(SymbolTable_t));
     (*table)->key = "Main";
     (*table)->top = NULL;
     (*table)->next = NULL;
 }
 
-
-void stl_push(SymbolTable_t **table, char * name)
-{
+//push new symbol to table
+void stl_push(SymbolTable_t **table, char * name){
     SymbolTable_t *new_ST = (SymbolTable_t *) malloc(sizeof(SymbolTable_t));
     new_ST->next = (*table);
     new_ST->top = NULL;
@@ -24,9 +22,8 @@ void stl_push(SymbolTable_t **table, char * name)
     (*table)->key = name;
 }
 
-
-bool stl_insert_top(SymbolTable_t *table, char *key)
-{
+//push new symbol
+bool stl_insert_top(SymbolTable_t *table, char *key){
     if (!table)
         return false;
     if (table->top == NULL)
@@ -80,9 +77,8 @@ bool stl_insert_top(SymbolTable_t *table, char *key)
     curr_item->key = key;
     return true;
 }
-
-bool stl_search(SymbolTable_t *table, char *key, char *name)
-{
+//search for symbol in table
+bool stl_search(SymbolTable_t *table, char *key, char *name){
     if (!table || !key)
     {
         //printf("vracim nULL\n");
@@ -121,27 +117,27 @@ bool stl_search(SymbolTable_t *table, char *key, char *name)
     }
     return false;
 }
-
- void recursive_print(Item_t *table){
-    printf("         %s\n", table->key);
-    if(table->lptr!= NULL){
-        recursive_print(table->lptr);
-    }
-    if(table->rptr!= NULL){
-        recursive_print(table->rptr);
-    }
- }
-
- void stl_print(SymbolTable_t *table){
-    while((table)!= NULL){
-        printf("%s\n", (table)->key);
-        if((table)->top!=NULL){
-            recursive_print((table)->top);
-        }
-        table = (table)->next;
-    }
- }
-
+//recursive print of symbol table
+void recursive_print(Item_t *table){
+   printf("         %s\n", table->key);
+   if(table->lptr!= NULL){
+       recursive_print(table->lptr);
+   }
+   if(table->rptr!= NULL){
+       recursive_print(table->rptr);
+   }
+}
+//print symbol table
+void stl_print(SymbolTable_t *table){
+   while((table)!= NULL){
+       printf("%s\n", (table)->key);
+       if((table)->top!=NULL){
+           recursive_print((table)->top);
+       }
+       table = (table)->next;
+   }
+}
+//insert new symbol to top
 bool stl_insert_to_top(SymbolTable_t *table, char *key, char *name){
     if (!table){
         return false;
@@ -201,7 +197,7 @@ bool stl_insert_to_top(SymbolTable_t *table, char *key, char *name){
     curr_item->key = key;
     return true;
 }
-
+//find if funtion exists in symtable
 bool stl_find_func(SymbolTable_t *table, char* name){
     while(table->next != NULL){
         if(strcmp(table->key, name) == 0){
@@ -211,7 +207,7 @@ bool stl_find_func(SymbolTable_t *table, char* name){
     }
     return false;
 }
-
+//counts number of functions in symtable
 int stl_number_of_func(SymbolTable_t *table){
     int vysledek = 0;
     while(table->next != NULL){
@@ -220,7 +216,7 @@ int stl_number_of_func(SymbolTable_t *table){
     }
     return vysledek;
 }
-
+//finds number of parameters for function
 int stl_number_of_par(SymbolTable_t *table, char* name){
     while(table->next != NULL){
         if(strcmp(table->key, name) == 0){

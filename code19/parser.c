@@ -19,27 +19,27 @@ bool DEF_PARAM_LIST();
 char* get_label_name(int n, char c);
 char* get_param_name();
 
-
+//concatenates 2 strings
 char* concat(char* str1, char* str2){
     char* vysledek = (char *)malloc(strlen(str1) + strlen(str2) + 1);
     sprintf(vysledek, "%s%s", str1, str2);
     return vysledek;
 }
 
-
+//returns name of var in IFJcode19 form
 char* get_var_name(char* name){
     char* vysledek = (char *)malloc(strlen("LF@")+strlen(name));
     sprintf(vysledek, "LF@%s", name);
     return vysledek;
 }
-
+//returns IFJcode19 for param
 char* get_param_name(){
     int delka = (int)(log10(tabulka->param_count)+1);
     char* vysledek = (char *)malloc(delka * sizeof(char) + 5);
     sprintf(vysledek, "LF@%%%d", tabulka->param_count);
     return vysledek;
 }
-
+//generates new label name
 char * get_label_name(int n, char c){
     int delka = (int)(log10(n))+1;
     char* vysledek = (char *)malloc(delka * sizeof(char) + 3);
@@ -48,13 +48,11 @@ char * get_label_name(int n, char c){
     sprintf(vysledek+2, "%d", n);
     return vysledek;
 }
-
+//generates individual params for user functions
 bool NEXT_DEF_PARAM(){
     get_next_token(f, token);
-//    printf("token type je %d\n", token->type);
     if(token->type == token_comma){
         get_next_token(f, token);
-//        printf("token type je %d\n", token->type);
         if(token->type == token_id){
             stl_insert_top(tabulka, token->val.c);
             tabulka->param_count++;
@@ -69,16 +67,15 @@ bool NEXT_DEF_PARAM(){
     exit(2);
     return 0;
 }
-
+//reads params when defining user function
 bool DEF_PARAM_LIST(){
     get_next_token(f, token);
-//    printf("token type je %d\n", token->type);
     if(token->type == token_right_bracket){
         return true;
     } else if(token->type == token_id){
         stl_insert_top(tabulka, token->val.c);
         tabulka->param_count++;
-        push_list ("DEFVAR", get_var_name(token->val.c), NULL, NULL); //TF@token->val.c
+        push_list ("DEFVAR", get_var_name(token->val.c), NULL, NULL);
         push_list("MOVE", get_var_name(token->val.c), get_param_name(), NULL);
         return NEXT_DEF_PARAM();
     }
@@ -87,10 +84,9 @@ bool DEF_PARAM_LIST(){
     return 0;
 }
 
-
+//generates code for user functions
 bool DEF (){
     get_next_token(f, token);
-//    printf("token type je %d    %s\n", token->type, token->val.c);
     if(token->type == token_id){
         if(stl_find_func(tabulka, token->val.c)){
             fprintf(stderr, "1 DEF error type: %d\n", 3);
@@ -101,14 +97,11 @@ bool DEF (){
 
         push_list("JUMP", get_label_name(stl_number_of_func(tabulka), 'm'), NULL, NULL);
         push_list ("LABEL", token->val.c, NULL, NULL);
-        //printf("label name: %s", token->val.c );
         push_list ("PUSHFRAME", NULL, NULL, NULL);
-        //push_list ("CREATEFRAME", NULL, NULL, NULL);
         push_list ("DEFVAR", "LF@%retval", NULL, NULL);
         push_list ("MOVE", "LF@%retval", "nil@nil", NULL);
 
         get_next_token(f, token);
-        //printf("token type je %d\n", token->type);
         if(token->type == token_left_bracket){
             if(DEF_PARAM_LIST()){
                 get_next_token(f, token);
@@ -117,14 +110,10 @@ bool DEF (){
                     if(token->type == token_eol){
                         get_next_token(f, token);
                         if(token->type == token_indent){
-                            get_next_token(f, token);                                
-                            //get_next_token(f, token);
-                            //printf("jdu na statement list\n");
+                            get_next_token(f, token);
                             if(STATEMENT_LIST()){
-                                //printf("prosel jsem statement list\n");
                                 if(last_token.type == token_dedent){
                                     current_function = "Main";
-                                    //printf("prosel jsem def\n");
                                     push_list ("POPFRAME", NULL, NULL, NULL);
                                     push_list ("RETURN", NULL, NULL, NULL);
                                     push_list("LABEL", get_label_name(stl_number_of_func(tabulka), 'm'), NULL, NULL);
@@ -141,10 +130,8 @@ bool DEF (){
     exit(2);
     return 0;
 }
-
+//reads body of if, while and defined functions
 bool STATEMENT_LIST(){
-    //get_next_token(stdin, token);
-//    printf("statementlist token type je %d\n", token->type);
     while(token->type == token_eol || token->type == token_pass){
         get_next_token(f, token);
     }
@@ -161,7 +148,7 @@ bool STATEMENT_LIST(){
     return false;
     }
 }
-
+//evaluates statement
 bool STATEMENT(){
     bool zavorky=false;
     if(token->type == token_eol || token->type == token_pass){
@@ -170,7 +157,6 @@ bool STATEMENT(){
         expression(current_function, NULL);
         return true;
     } else if(token->type == token_id){
-//        printf("statement id\n");
         current_variable = token->val.c;
         if(stl_find_func(tabulka, token->val.c)){
             expression(current_function, NULL);
@@ -179,8 +165,6 @@ bool STATEMENT(){
             get_next_token(f, token);
             if(token->type == token_equal){
                 if(in_if==1){
-                    //printf("%s\n",get_var_name(current_variable));
-                    //in_if_vars[last_in_if_var]=(char*) malloc(strlen(token->val.c));
                     strcpy(in_if_vars[last_in_if_var],get_var_name(current_variable));
                     last_in_if_var++;
                 }
@@ -188,7 +172,6 @@ bool STATEMENT(){
                 push_list ("DEFVAR", get_var_name(current_variable), NULL, NULL);
                 get_next_token(f, token);
                 expression(current_function, current_variable);
-//                printf("statement new id token type je %s\n", current_variable);
                 return 1;
             }else {
                 fprintf(stderr, "1 STATEMENT error type: %d\n", 2);
@@ -196,8 +179,6 @@ bool STATEMENT(){
                 return 0;
             }
         }else {
-//            printf("ahoj\n");
-//          printf("jdu na exp\n");
 
             last_token = *token;
             get_next_token(f, token);
@@ -254,24 +235,17 @@ bool STATEMENT(){
 
         if(token->type == token_colon){
             get_next_token(f, token);
-            //printf("thentoken type je %d\n", token->type);
             if(token->type == token_eol){
                 get_next_token(f, token);
                 if(token->type == token_indent){
                     get_next_token(f, token);
-                    //get_next_token(f, token);
-                    //printf("thentoken type je %d\n", token->type);
-                    //printf("jdu na statement list\n");
                     if(STATEMENT_LIST()){
 
                         elselabel = S_Top(label_Stack);
                         S_Pop(label_Stack);
                         push_list("JUMP", endlabel, NULL, NULL);
                         push_list("LABEL", elselabel, NULL, NULL);
-                        //printf("lasttoken type je %d\n", last_token.type);
-                        //printf("token type ma byt else %d\n", token->type);
                         if(last_token.type == token_dedent){
-                            //get_next_token(f, token);
                             if(token->type == token_else){
                                 in_if=2;
                                 get_next_token(f, token);
@@ -346,7 +320,6 @@ bool STATEMENT(){
             get_next_token(f, token);
             if(token->type == token_eol){
                 get_next_token(f,token);
-                //printf("dotoken je \n", token->type);
                 if(token->type == token_indent){
                     get_next_token(f, token);
                     if(STATEMENT_LIST()){
@@ -370,7 +343,6 @@ bool STATEMENT(){
         if(strcmp(current_function,"Main")!=0){
             get_next_token(f, token);
             expression(current_function,"%retval");
-            //push_list("MOVE","LF@%retval", NULL, NULL);
             return true;
 
 
@@ -381,7 +353,7 @@ bool STATEMENT(){
     return 0;
 
 }
-
+//reads main body of program
 bool PROG(){
     if(last_token.type != token_dedent){
         get_next_token(f, token);
@@ -391,38 +363,29 @@ bool PROG(){
         }
         last_token = *token;
     }
-    //printf("token type %d\n", token->type);
     if(token->type == token_def){
         if(DEF()){
-            //get_next_token(stdin, token);
             if(token->type == token_eol || last_token.type == token_dedent){
-                //printf("prosel jsem prog_def\n");
                 return PROG();
             }
         }
     } else if(token->type == token_eol || token->type == token_nic || token->type == token_pass || token->type == token_doc_string ) {
         return PROG();
     }else if(token->type == token_eof){
-//        printf("eof->koncim\n");
         return 1;
     } else {
-        //printf("jdu na statement\n");
         if(STATEMENT() == true){
-            //get_next_token(stdin, token);
-//            printf("token type je %d\n", token->type);
             if(token->type == token_eol || last_token.type == token_dedent || token->type == token_dedent){
-//                printf("vracim prog\n", token->type);
                 return PROG();
             }
         }
     }
-fprintf(stderr, "PROG error type: %d\n", 2);
-exit(2);
-return 0;
+    fprintf(stderr, "PROG error type: %d\n", 2);
+    exit(2);
+    return 0;
 }
-
+//start of code parsing
 void parse( ){
-//    printf("start parse \n");
     label_Stack = S_Init();
     stl_init(&tabulka);
     token = create_new_token();
@@ -431,7 +394,6 @@ void parse( ){
     }
 
     f = stdin;
-    //f = fopen("soubor.py", "r");
 
     push_list("CREATEFRAME", NULL, NULL, NULL);
     push_list("PUSHFRAME", NULL, NULL, NULL);

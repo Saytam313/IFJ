@@ -8,9 +8,8 @@
 
 list_t * instr_list;
 
-
-void list_init()
-{
+//initialization of list
+void list_init(){
 	instr_list = (list_t*) malloc(sizeof(list_t));
 	if(!instr_list){
         fprintf(stderr, "1. list_init error type: %d\n", 99);
@@ -18,7 +17,7 @@ void list_init()
 	instr_list->First=NULL;
 	instr_list->Last=NULL;
 }
-
+//initialization of instruction
 instruction_t * instr_init (){
 	instruction_t * new_instr =  (instruction_t *)malloc(sizeof(instruction_t));
 	if(!new_instr){
@@ -31,9 +30,8 @@ instruction_t * instr_init (){
 	return new_instr;
 }
 
-
-void push_list(char * instr, char * par1, char * par2, char * par3 )
-{
+//adds list new list element
+void push_list(char * instr, char * par1, char * par2, char * par3 ){
 	instruction_t * new_instr = instr_init();
 	strcpy(new_instr->instr_name,instr);
 	if(par1 != NULL){
@@ -64,7 +62,7 @@ void push_list(char * instr, char * par1, char * par2, char * par3 )
 	}
 }
 
-
+//generates IFJcode19
 void print_list(){
 	printf(".IFJcode19\n");
     instruction_t * tmp = NULL;

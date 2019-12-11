@@ -12,7 +12,7 @@
 #include "symtable.h"
 
 
-
+//evaluating expression
 void expression(char* act_func, char* tok);
 
 #endif // EXPRESSION_H_INCLUDED
