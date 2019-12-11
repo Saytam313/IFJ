@@ -1,3 +1,15 @@
+/*
+*           Škola: Brno University of Technology, Faculty of Information Technology
+*  Název projektu: IFJ19
+*        Předměty: IFJ a IAL
+*            Část: Parser
+*             Tým: 015
+*        Varianta: I
+*          Autoři: Aleš Tetur          (xtetur01)
+*                  Šimon Matyáš        (xmatya11)
+*                  Marek Bahník        (xbahni00)
+*                  Aliakse Slepitsa    (xslepi00)
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

@@ -1,0 +1,463 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"token_va",
+				"token_val_float"
+			],
+			[
+				"token",
+				"token_nil"
+			],
+			[
+				"stl_",
+				"stl_number_of_par"
+			],
+			[
+				"oper",
+				"operand2"
+			],
+			[
+				"token_int",
+				"token_val_int"
+			],
+			[
+				"get_",
+				"get_next_token"
+			],
+			[
+				"ptr",
+				"ptrht"
+			],
+			[
+				"tHT",
+				"tHTItem"
+			],
+			[
+				"stav",
+				"zmena_stavu"
+			],
+			[
+				"led",
+				"leds_active"
+			],
+			[
+				"std",
+				"std_logic_vector"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C Single File.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				"Syntax Check"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"package control",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Local Dependency"
+			],
+			[
+				"",
+				"Bookmarks: Select All"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 164.0,
+		"history":
+		[
+			"pip3",
+			"pip3 install numpy",
+			"6*4",
+			"len(\"asdasd\")",
+			"make"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/parser.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/scanner.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/stack.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/stack.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/scanner.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/symtable.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/symtable.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/built_in.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/built_in.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/expression.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/expression.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/instr_list.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/intr_list.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/parser.c",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/token.h",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badtype5.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badtype4.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badtype2.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/zerodiv2.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/zerodiv.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badindent.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/buildin.py",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/fpga/top.vhd",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/fpga/ram.vhd",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/fpga/lcdctrl.vhd",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/fpga/kbctrl.vhd",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/fpga/cpu.vhd",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/mcu/main.c",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/project.xml",
+		"/C/Users/Marab/Desktop/INP/Projekt 2/inp/inp2019-proj2/odevzdat/cpu.vhd",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/main.c",
+		"/C/Users/Marab/Desktop/ISS/xbahni/src/spektrogram.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badvar3.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badcall4.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/test-poznamky.txt",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/ifj19.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/outputs/factorial2.py.ifj19code",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/config.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/README.txt",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/soubor.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/badreturn.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/ifj19",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/outputs/factorial.py.ifj19code",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/factorial2.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/tests/factorial.py",
+		"/C/Users/Marab/Desktop/IFJ/ifj19-testsuite-master/testing.py",
+		"/C/Users/Marab/Desktop/ISS/xbahni/src/python.sublime-build",
+		"/C/Users/Marab/Desktop/ISS/xbahni/src/features.py",
+		"/C/Users/Marab/Desktop/ISS/xbahni/src/spektrogram.m",
+		"/C/Users/Marab/Desktop/ISS/xbahni/sentences/spektrogram.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err/example3_err.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err/example2_err.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err/docstr1_err.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/ifj19.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err_indentation3.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err_indentation2.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err_indentation1.py",
+		"/C/Users/Marab/AppData/Local/Temp/Rar$DIa4456.28165/err_indentation1.err",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example1.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err_localglobal.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/err_localglobal.err",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example3.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example2.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/ifj19.ifj",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/soubor.py",
+		"/C/Users/Marab/Desktop/IFJ/examples/err_indentation2.src",
+		"/C/Users/Marab/Desktop/IFJ/examples/err_indentation1.err",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example3.src",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example2.src",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/example1.src",
+		"/C/Users/Marab/Desktop/IFJ/examples/example1.src",
+		"/C/Users/Marab/Desktop/IFJ/examples/docstr1.src",
+		"/C/Users/Marab/Downloads/ifj19.py",
+		"/C/Users/Marab/Desktop/IFJ/examples/code/example_demo.src",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/errors/err4.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/errors/err5.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/test.ifj",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/errors/err3.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/errors/err1.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/errors/err2.py",
+		"/C/Users/Marab/Desktop/IFJ/examples/code/example_recursive_fibonacci.src",
+		"/C/Users/Marab/Desktop/IFJ/examples/code/example_return.src",
+		"/C/Users/Marab/Desktop/IFJ/examples/README",
+		"/C/Users/Marab/Desktop/IFJ/examples/relop+ext_BOOLOP.out",
+		"/C/Users/Marab/Desktop/IFJ/examples/relop+ext_BOOLOP.in",
+		"/C/Users/Marab/Desktop/IFJ/examples/example1.out",
+		"/C/Users/Marab/Desktop/IFJ/examples/example1.in",
+		"/C/Users/Marab/Desktop/IFJ/examples/err_localglobal.out",
+		"/C/Users/Marab/Desktop/IFJ/examples/docstr1.out",
+		"/C/Users/Marab/Desktop/IFJ/examples/docstr1.in",
+		"/C/Users/Marab/Desktop/IFJ/ifj19.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/expression.c",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/scanner.c",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/parser.c",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/symtable.c",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/main.c",
+		"/C/Users/Marab/eclipse-workspace/IFJ/expression.c",
+		"/C/Users/Marab/eclipse-workspace/IFJ/main.c",
+		"/C/Users/Marab/eclipse-workspace/IFJ/parser.c",
+		"/C/Users/Marab/eclipse-workspace/IFJ/scanner.c",
+		"/C/Users/Marab/eclipse-workspace/IFJ/Makefile",
+		"/C/Users/Marab/eclipse-workspace/IFJ/token.h",
+		"/C/Users/Marab/eclipse-workspace/IFJ/IFJ.sublime-project",
+		"/C/Users/Marab/eclipse-workspace/IFJ/soubor.py",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code18/parser.c",
+		"/C/Users/Marab/Downloads/projekt.tex",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c016/c016.c",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/Marab/Desktop/IFJ/IFJ-master/code19/intr_list.c",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c016/c016-test.out",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c402/c402-test.out",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c402/c402.c",
+		"/C/Users/Marab/Desktop/IAL/Úkol 1/ial_2019_du1/c206/c206.c",
+		"/C/Users/Marab/Desktop/IFJ/projekt 2018.c",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c401/Makefile",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c402/Makefile",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c401/c401.c",
+		"/C/Users/Marab/Desktop/winXP shared/xlogin00/fpga/ledc8x8.vhd",
+		"/C/Users/Marab/Desktop/IAL/Úkol 2/c401/._Makefile",
+		"/C/Users/Marab/Desktop/INP/xlogin00/fpga/ledc8x8.vhd",
+		"/C/Users/Marab/Desktop/INP/xlogin00/fpga/ledc8x8.ucf",
+		"/D/Marek/Škola/VŠ/PORNO/2. semestr/INC/projekt/projekt/fpga/fsm.vhd",
+		"/D/Marek/Škola/VŠ/PORNO/2. semestr/INC/projekt/projekt/fpga/fpga.vhd",
+		"/C/Users/Marab/Desktop/INP/xlogin00/project.xml",
+		"/C/Users/Marab/Desktop/INP/xlogin00/mcu/main.c"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"FLOAT2INT",
+			"float2",
+			"fprintf(stderr",
+			"fprintf(stderr, \"%d\", 2)",
+			"fprintf",
+			"printf",
+			"print(",
+			"Printf(\"2\")",
+			"2. infix_postfix",
+			"1 STATEMENT",
+			"infix",
+			"exit(9)",
+			"bad_type",
+			"token_return",
+			"bad",
+			"get_name",
+			"realloc(",
+			"Token_t last_token",
+			"last_token",
+			"1. rand",
+			"token_length",
+			"len",
+			"exit(2)",
+			"53",
+			"exit(53)",
+			"token_t",
+			"exit(2)",
+			"eit(2)",
+			"exit(2)",
+			"S_Top",
+			"0x1.6cccccp+2",
+			"div",
+			"token_div",
+			"idivs",
+			"div",
+			"exit(2)",
+			"2\"",
+			"printf(\"2\")",
+			"exit(2)",
+			"exit(2),",
+			"exit(2)",
+			"DEF error type",
+			"exit(2)",
+			"exit(3)",
+			"53",
+			"exit(53)",
+			"LTS",
+			"\\010",
+			"WRITE",
+			"write",
+			"MULS",
+			"03",
+			"stderr",
+			"statement_list",
+			"infix",
+			"statement_list",
+			"token_t",
+			":",
+			"then",
+			"if",
+			"token_if",
+			"if",
+			") ",
+			"(*RootPtr)",
+			"when",
+			"--",
+			"            --",
+			"half_sec",
+			"led_out",
+			"row_out",
+			"zmena",
+			"ctr",
+			"std_logic_vector",
+			"rotace",
+			"rotacia",
+			"riadky",
+			"(\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 126.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Python/Python.sublime-build",
+	"project": "",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

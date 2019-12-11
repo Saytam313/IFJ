@@ -6,7 +6,6 @@
 *             Tým: 015
 *        Varianta: I
 *          Autoři: Aleš Tetur          (xtetur01)
-*                  Šimon Matyáš        (xmatya11)
 */
 
 

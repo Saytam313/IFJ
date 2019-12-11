@@ -6,8 +6,8 @@
 #       Varianta: I
 #         Autoři: Aleš Tetur          (xtetur01)
 #                 Šimon Matyáš        (xmatya11)
-#                 Jan Tilgner         (xtilgn01)
-#                 Jan Bíl             (xbilja00)
+#                 Marek Bahník        (xbahni00)
+#                 Aliaksei Slepitsa   (xslepi00)
 #
 CC= gcc -g
 CCFLAGS= -std=c99 -Wall -Wextra -pedantic

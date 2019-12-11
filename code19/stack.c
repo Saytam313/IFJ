@@ -1,3 +1,14 @@
+/*
+*           Škola: Brno University of Technology, Faculty of Information Technology
+*  Název projektu: IFJ19
+*        Předměty: IFJ a IAL
+*            Část: Stack
+*             Tým: 015
+*        Varianta: I
+*          Autoři: Šimon Matyáš        (xmatya11)
+*                  Marek Bahník        (xbahni00)
+*                  Aliakse Slepitsa    (xslepi00)
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

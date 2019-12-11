@@ -1,3 +1,14 @@
+/*
+*           Škola: Brno University of Technology, Faculty of Information Technology
+*  Název projektu: IFJ19
+*        Předměty: IFJ a IAL
+*            Část: Instructions
+*             Tým: 015
+*        Varianta: I
+*          Autoři: Šimon Matyáš        (xmatya11)
+*                  Marek Bahník        (xbahni00)
+*                  Aliakse Slepitsa    (xslepi00)
+*/
 #ifndef INSTR_LIST_H_INCLUDED
 #define INSTR_LIST_H_INCLUDED
 #include "parser.h"

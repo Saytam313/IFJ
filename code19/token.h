@@ -2,13 +2,14 @@
 *           Škola: Brno University of Technology, Faculty of Information Technology
 *  Název projektu: IFJ19
 *        Předměty: IFJ a IAL
-*            Část: Scanner
+*            Část: Parser
 *             Tým: 015
 *        Varianta: I
-*          Autoři: Aleš Tetur          (xtetur01)
-*                  Šimon Matyáš        (xmatya11)
+*          Autoři: Šimon Matyáš        (xmatya11)
+*                  Marek Bahník        (xbahni00)
+*                  Aliakse Slepitsa    (xslepi00)
+*                  Aleš Tetur          (xtetur01)
 */
-
 #ifndef TOKEN_H
 #define TOKEN_H
 
